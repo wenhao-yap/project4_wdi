@@ -6,35 +6,50 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      response : ''
+      data : ''
     }
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
+    this.fetchAPI('/api/hello', (res) => {
+      this.setState({data: res})
+    })
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  };
+  fetchAPI = (url,callback) => {
+    fetch(url)
+      .then((response) => {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+          return;
+        }
+        response.json().then((data) =>{
+          console.log("fetching data");
+          callback(data); //make sure to return something
+        });
+      })
+      .catch((err) => {
+        console.log('Fetch Error :-S', err);
+    });
+  }
 
   render() {
+    let test = Object.keys(this.state.data).map(item => {
+      return (
+        <p>{item}</p>
+      )
+    })
+
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          {this.state.response}
-        </p>
+        <div className="App-intro">
+          {test}
+        </div>
       </div>
     );
   }
