@@ -5,12 +5,30 @@
  */
 
 const get = (db) => {
-  	return (request, response) => {
-	    db.product.get((error, queryResult) => {
-	    	response.send(queryResult.rows);
-	    })
+  return (request, response) => {
+    db.product.get((error, queryResult) => {
+    	response.send(queryResult.rows);
+    })
 	} 
-}
+};
+
+const create = (db) => {
+  return (request, response) => {
+    console.log(request.body);
+    db.product.create(request.body,(error, queryResult) => {
+    	response.send(JSON.stringify(queryResult.rows));
+    })
+  }
+};
+
+const edit = (db) => {
+  return (request, response) => {
+    console.log(request.body);
+    db.product.create(request.body,(error, queryResult) => {
+      response.send(JSON.stringify(queryResult.rows));
+    })
+  }
+};
 
  /**
  * ===========================================
@@ -19,5 +37,7 @@ const get = (db) => {
  */
 
 module.exports = {
-  get
+  get,
+  create,
+  edit
 } 
