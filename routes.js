@@ -1,5 +1,5 @@
-const test = require('./controllers/test');
+const product = require('./controllers/product');
 
-module.exports = (app) => {
-  app.get('/api/hello', test.get);
+module.exports = (app,db, request) => {
+  app.get('/api/products', product.get(db));
 };

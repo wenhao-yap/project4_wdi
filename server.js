@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('./db');
 
 /**
  * ===================================
@@ -14,7 +15,7 @@ const app = express();
  * ===================================
  */
 
-require('./routes')(app);
+require('./routes')(app, db);
 
 /**
  * ===================================

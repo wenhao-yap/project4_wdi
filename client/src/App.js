@@ -6,14 +6,14 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      data : ''
+      data : []
     }
   }
 
   componentDidMount() {
-    this.fetchAPI('/api/hello', (res) => {
+    this.fetchAPI('/api/products', (res) => {
       this.setState({data: res})
-    })
+    }) 
   }
 
   fetchAPI = (url,callback) => {
@@ -35,11 +35,11 @@ class App extends Component {
   }
 
   render() {
-    let test = Object.keys(this.state.data).map(item => {
-      return (
-        <p>{item}</p>
-      )
-    })
+    let output = this.state.data.map(item => {
+        return (
+          <li>{item.name}</li>
+        )
+    });
 
     return (
       <div className="App">
@@ -48,7 +48,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="App-intro">
-          {test}
+            <ul>{output}</ul>    
         </div>
       </div>
     );
