@@ -35,6 +35,15 @@ module.exports = (dbPool) => {
         if(error) throw error;
           callback(error, queryResult);
       });   
+    },
+
+    remove: (deleteProduct, callback) => {
+      const queryString = 'DELETE FROM products WHERE id=$1';
+      const values = [id];
+      dbPool.query(queryString,values, (error, queryResult) => {
+        if(error) throw error;
+          callback(error, queryResult);
+      }); 
     }
 	}
 }

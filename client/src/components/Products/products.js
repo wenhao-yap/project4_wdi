@@ -43,14 +43,15 @@ class Products extends React.Component{
 
   render() {
     return (
-    	<div className = "productsTable">
-    		<ProductsAdd 
+    	<div className = "productsWrapper container">
+    		<h1> Products </h1>
+        <ProductsList productsData={this.state.productsData} />
+        <h2> Add product here </h2>
+        <ProductsAdd 
           handleChange = {(e) => this.handleChange(e)} 
           handleSubmit = {(e) => this.handleSubmit(e)} 
           newProduct = {this.state.newProduct} 
         />
-    		<h2> Table </h2>
-        <ProductsList productsData={this.state.productsData} />
       </div>   
     );
   }  

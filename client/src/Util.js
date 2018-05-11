@@ -31,8 +31,8 @@ export let postAPI = (url,data) => {
 }
 
 export const tableOptions = {
-  paginationSize: 4,
-  pageStartIndex: 0,
+  paginationSize: 5,
+  pageStartIndex: 1,
   alwaysShowAllBtns: true, // Always show next and previous button
   // withFirstAndLast: false, // Hide the going to First and Last page button
   // hideSizePerPage: true, // Hide the sizePerPage dropdown always
@@ -50,7 +50,7 @@ export const tableOptions = {
   }, {
     text: '10', value: 10
   }, {
-    text: 'All', value: 30
+    text: '30', value: 30
   }] // A numeric array is also available. the purpose of above example is custom the text
 };
 

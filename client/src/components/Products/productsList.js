@@ -27,36 +27,59 @@ class ProductsList extends React.Component {
 			  dataField: 'id',
 			  text: 'Product ID',
 			  headerAlign: 'center',
+			  align: 'center',
 			  sort: true
 			}, {
 			  dataField: 'name',
 			  text: 'Product Name',
+			  align: 'center',
 			  filter: textFilter(),
 			  sort: true
 			}, {
 			  dataField: 'description',
 			  text: 'Product Description',
+			  align: 'center',
 			  filter: textFilter(),
 			  sort: true
 			}
 		]
 
+		const selectRow = {
+		  mode: 'checkbox',
+		  clickToSelect: true,
+		  clickToEdit: true,
+		  selected: false,
+		  onSelect: (row, isSelect, rowIndex, e) => {
+		    console.log(row.id);
+		    console.log(isSelect);
+		    console.log(rowIndex);
+		    console.log(e);
+		  },
+		  onSelectAll: (isSelect, rows, e) => {
+		    console.log(isSelect);
+		    console.log(rows);
+		    console.log(e);
+		  }		  
+		};
+
 	  return (
 	    <div className="container"> 
 	    	{this.state.updateProduct.length === undefined ? 
 	    		(<h3>{this.state.cellHistory} has been updated sucessfully to {this.state.updateProduct.name}!</h3>):
-	    		(<h3>Hint: Click the cell to edit its value!</h3>)} 	
+	    		(<h3>Hint: Double click cell to edit and press enter to confirm!</h3>)} 	
 	    	<BootstrapTable 
 		    	keyField='id' 
 		    	data={ this.props.productsData } 
 		    	columns={ columns }
 		    	cellEdit={ cellEditFactory({ 
-		    		mode: 'click',
+		    		mode: 'dbclick',
 		    		afterSaveCell: this.onAfterSaveCell.bind(this) 
 		    	}) }
 		    	filter={ filterFactory() }
 		    	pagination={ paginationFactory(tableOptions) }
-		    	hover condensed 
+		    	selectRow={ selectRow }
+		    	hover condensed
+		    	noDataIndication="Table is Empty" 
 	    	/>
 	    </div>
 	  );

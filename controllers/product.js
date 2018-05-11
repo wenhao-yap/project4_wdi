@@ -30,6 +30,14 @@ const edit = (db) => {
   }
 };
 
+const remove = (db) => {
+  return (request, response) => {
+    db.product.remove(request.params.id, (error, queryResult) => {
+      response.send(JSON.stringify(queryResult.rows));
+    });
+  };
+};
+
  /**
  * ===========================================
  * Export controller functions as a module
@@ -39,5 +47,6 @@ const edit = (db) => {
 module.exports = {
   get,
   create,
-  edit
+  edit,
+  remove
 } 

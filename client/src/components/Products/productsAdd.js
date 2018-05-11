@@ -4,7 +4,6 @@ class ProductsAdd extends React.Component {
   render() {
     return (
 		<div className='AddForm'>
-			<h1> Add product here </h1>
 			<form onSubmit={this.props.handleSubmit}>
 				<label> Product Name:
 					<input 
