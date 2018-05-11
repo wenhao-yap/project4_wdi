@@ -31,9 +31,9 @@ class Products extends React.Component{
   handleSubmit(event){
     event.preventDefault();
     let newProduct = this.state.newProduct;
-    newProduct.id = this.state.productsData.length + 1;
     postAPI('/api/products/new',newProduct);
     let data = this.state.productsData;
+    newProduct.id = data[data.length-1].id + 1;
     data.push(newProduct);
   	this.setState({
       newProduct: {},

@@ -24,7 +24,7 @@ const create = (db) => {
 const edit = (db) => {
   return (request, response) => {
     console.log(request.body);
-    db.product.create(request.body,(error, queryResult) => {
+    db.product.edit(request.body,(error, queryResult) => {
       response.send(JSON.stringify(queryResult.rows));
     })
   }
