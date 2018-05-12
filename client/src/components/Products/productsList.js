@@ -10,7 +10,6 @@ class ProductsList extends React.Component {
 		super(props);
 		this.state = {
 			updateProduct: {},
-			cellHistory: '',
 			deleteProduct: {}
 		};
 	}
@@ -18,7 +17,7 @@ class ProductsList extends React.Component {
 	onAfterSaveCell(value, changed, newRow){
 		console.log("Selected cell with value: " + value);
 		console.log(newRow);
-		this.setState({updateProduct:newRow, cellHistory:value});
+		this.setState({updateProduct:newRow});
 		postAPI('/api/products/edit',newRow);
 	}
 
@@ -33,7 +32,7 @@ class ProductsList extends React.Component {
   	const columns = [
   		{
 			  dataField: 'id',
-			  text: 'Product ID',
+			  text: 'ID',
 			  headerAlign: 'center',
 			  align: 'center',
 			  sort: true
@@ -45,7 +44,19 @@ class ProductsList extends React.Component {
 			  sort: true
 			}, {
 			  dataField: 'description',
-			  text: 'Product Description',
+			  text: 'Description',
+			  align: 'center',
+			  filter: textFilter(),
+			  sort: true
+			}, {
+			  dataField: 'price',
+			  text: 'Price(SGD)',
+			  align: 'center',
+			  filter: textFilter(),
+			  sort: true
+			}, {
+			  dataField: 'quantity',
+			  text: 'Quantity',
 			  align: 'center',
 			  filter: textFilter(),
 			  sort: true
@@ -68,7 +79,7 @@ class ProductsList extends React.Component {
 	    <div className="container"> 
 	    	{Object.keys(this.state.updateProduct).length === 0 && this.state.updateProduct.constructor === Object ? 
 	    		(<h3>Hint: Double click cell to edit and press enter to confirm!</h3>):
-	    		(<h3>{this.state.cellHistory} has been updated sucessfully to {this.state.updateProduct.name}!</h3>)} 	    			
+	    		(<h3>Updated {this.state.updateProduct.name} sucessfully!</h3>)} 	    			
 	    	<button onClick={(e) => this.deleteCell(e)} >Delete</button>
 	    	<BootstrapTable 
 		    	keyField='id' 

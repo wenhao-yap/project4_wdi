@@ -11,10 +11,22 @@ class ProductsAdd extends React.Component {
 						name='name' 
 						onChange={this.props.handleChange}/>
 				</label><br/>
-				<label> Product Description:
+				<label> Description:
 					<input 
 						type='text' 
 						name='description' 
+						onChange={this.props.handleChange}/>
+				</label><br/>
+				<label> Price(SGD):
+					<input 
+						type='text' 
+						name='price' 
+						onChange={this.props.handleChange}/>
+				</label><br/>
+				<label> Quantity:
+					<input 
+						type='text' 
+						name='quantity' 
 						onChange={this.props.handleChange}/>
 				</label><br/>
 				<input type='submit' value="Add product"/>

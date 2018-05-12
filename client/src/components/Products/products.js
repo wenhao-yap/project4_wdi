@@ -11,7 +11,9 @@ class Products extends React.Component{
       newProduct: {
         id: '',
         name: '',
-        description: ''
+        description: '',
+        price: '',
+        quantity: ''
       }
     }
   }
