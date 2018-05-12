@@ -16,7 +16,7 @@ class ProductsList extends React.Component {
 
 	onAfterSaveCell(value, changed, newRow){
 		console.log("Selected cell with value: " + value);
-    	newRow.price = parseFloat(newRow.price);
+    	newRow.price = parseFloat(newRow.price).toFixed(2);
     	newRow.quantity = parseInt(newRow.quantity,10);
 		console.log(newRow);
 		this.setState({updateProduct:newRow});

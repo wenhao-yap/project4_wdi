@@ -35,8 +35,8 @@ class Products extends React.Component{
     event.preventDefault();
     event.target.reset();
     let newProduct = this.state.newProduct;
-    newProduct.price = parseFloat(newProduct.price);
-    newProduct.quantity = parseInt(newProduct.price,10);    
+    newProduct.price = parseFloat(newProduct.price).toFixed(2);
+    newProduct.quantity = parseInt(newProduct.quantity,10);    
     postAPI('/api/products/new',newProduct);
     let data = this.state.productsData;
     newProduct.id = data[data.length-1].id + 1;
