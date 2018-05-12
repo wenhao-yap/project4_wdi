@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Link, withRouter } from "react-router-dom";
-import Products from './components/Products/products';
 import Home from './components/home'
-import './App.css';
+import Products from './components/Products/products';
+import Invoices from './components/Invoices/invoices';
 
 class App extends Component {
 
@@ -14,16 +14,20 @@ class App extends Component {
           <Link to="/">Home</Link>
           <span>&nbsp;&nbsp;</span>
           <Link to="/products">Products</Link>
+          <span>&nbsp;&nbsp;</span>
+          <Link to="/invoices">Invoices</Link>
 	      </nav>
 	      <main>
-	      	<Route exact path="/"             render={() => (
-              <Home />
-            )} />
+	      	<Route 
+            exact path="/"             
+            render={() => (<Home/>)} />
           <Route
             path='/products'
-            render={() => (
-              <Products />
-            )}
+            render={() => (<Products/>)}
+          />
+          <Route
+            path='/invoices'
+            render={() => (<Invoices/>)}
           />
 	      </main>
 		  </div>
