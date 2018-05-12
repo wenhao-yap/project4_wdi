@@ -32,7 +32,8 @@ const edit = (db) => {
 
 const remove = (db) => {
   return (request, response) => {
-    db.product.remove(request.params.id, (error, queryResult) => {
+    console.log(request.body);
+    db.product.remove(request.body.id, (error, queryResult) => {
       response.send(JSON.stringify(queryResult.rows));
     });
   };

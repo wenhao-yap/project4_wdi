@@ -1,16 +1,17 @@
 import React from 'react';
-import {postAPI,tableOptions} from '../../Util';
+import {postAPI,tableOptions,deleteAPI} from '../../Util';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 class ProductsList extends React.Component {
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
-			updateProduct: [],
-			cellHistory: ''
+			updateProduct: {},
+			cellHistory: '',
+			deleteProduct: {}
 		};
 	}
 
@@ -19,6 +20,13 @@ class ProductsList extends React.Component {
 		console.log(newRow);
 		this.setState({updateProduct:newRow, cellHistory:value});
 		postAPI('/api/products/edit',newRow);
+	}
+
+	deleteCell(event){
+		console.log(this.state.deleteProduct);
+		deleteAPI('/api/products/delete',this.state.deleteProduct);
+		this.props.handleRemove(this.state.deleteProduct);
+		this.setState({deleteProduct:{}});
 	}
 
   render() {
@@ -45,28 +53,23 @@ class ProductsList extends React.Component {
 		]
 
 		const selectRow = {
-		  mode: 'checkbox',
+		  mode: 'radio',
 		  clickToSelect: true,
-		  clickToEdit: true,
-		  selected: false,
-		  onSelect: (row, isSelect, rowIndex, e) => {
-		    console.log(row.id);
-		    console.log(isSelect);
-		    console.log(rowIndex);
-		    console.log(e);
-		  },
-		  onSelectAll: (isSelect, rows, e) => {
-		    console.log(isSelect);
-		    console.log(rows);
-		    console.log(e);
-		  }		  
+		  clickToEdit: true
+		};
+
+		const rowEvents = {
+		  onClick: (e, row, rowIndex) => {
+		    this.setState({deleteProduct:row})
+		  }
 		};
 
 	  return (
 	    <div className="container"> 
-	    	{this.state.updateProduct.length === undefined ? 
-	    		(<h3>{this.state.cellHistory} has been updated sucessfully to {this.state.updateProduct.name}!</h3>):
-	    		(<h3>Hint: Double click cell to edit and press enter to confirm!</h3>)} 	
+	    	{Object.keys(this.state.updateProduct).length === 0 && this.state.updateProduct.constructor === Object ? 
+	    		(<h3>Hint: Double click cell to edit and press enter to confirm!</h3>):
+	    		(<h3>{this.state.cellHistory} has been updated sucessfully to {this.state.updateProduct.name}!</h3>)} 	    			
+	    	<button onClick={(e) => this.deleteCell(e)} >Delete</button>
 	    	<BootstrapTable 
 		    	keyField='id' 
 		    	data={ this.props.productsData } 
@@ -78,6 +81,7 @@ class ProductsList extends React.Component {
 		    	filter={ filterFactory() }
 		    	pagination={ paginationFactory(tableOptions) }
 		    	selectRow={ selectRow }
+		    	rowEvents={ rowEvents }
 		    	hover condensed
 		    	noDataIndication="Table is Empty" 
 	    	/>
