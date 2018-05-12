@@ -34,7 +34,7 @@ class ProductsList extends React.Component {
   	const columns = [
   		{
 			  dataField: 'id',
-			  text: 'ID',
+			  text: 'Product ID',
 			  headerAlign: 'center',
 			  align: 'center',
 			  sort: true

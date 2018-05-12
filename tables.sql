@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS invoices (
   id SERIAL PRIMARY KEY,
   client TEXT,
   gross_amount DECIMAL(18,2),
+  afterGST DECIMAL(18,2),
   discount DECIMAL(18,2),
   total_amount DECIMAL(18,2),
   paid_status TEXT,

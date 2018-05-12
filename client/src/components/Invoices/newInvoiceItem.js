@@ -12,6 +12,7 @@ class NewInvoiceItem extends React.Component {
 
   	return(
       <div>
+        <h1>Invoice</h1>
         <form onSubmit={this.props.handleSubmit}>
           <label>Product:
             <select defaultValue="" onChange={this.props.handleSelect}>

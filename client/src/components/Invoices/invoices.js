@@ -11,11 +11,11 @@ class Invoices extends React.Component{
       productsData : [],
       invoicesData : [],
       newInvoice: {
-        id: '',
         client: '',
-        gross_amount: '',
-        discount: '',
-        total_amount: '',
+        gross_amount: 0,
+        afterGST: 0,
+        discount: 0,
+        total_amount: 0,
         paid_status: '',
         amount_payable: '',
         date: '',
@@ -24,6 +24,8 @@ class Invoices extends React.Component{
       pickedItem: {},
       invoice_item: {
         product_id: '',
+        name: '',
+        price: '',
         quantity: '',
         cost: ''
       }
@@ -49,11 +51,13 @@ class Invoices extends React.Component{
 
   handleChange(event){
     let quantity = parseInt(event.target.value,10)
-    let invoice_item = this.state.invoice_item;
-    invoice_item.quantity = quantity;
+    let invoice_item = this.state.invoice_item;   
     let pickedItem = this.state.pickedItem;
     pickedItem.price = parseFloat(pickedItem.price).toFixed(2);
-    invoice_item.cost = (quantity * pickedItem.price).toFixed(2);;  
+    invoice_item.quantity = quantity;
+    invoice_item.cost = (quantity * pickedItem.price).toFixed(2);
+    invoice_item.name = pickedItem.name;
+    invoice_item.price = pickedItem.price;
     this.setState({invoice_item:invoice_item});
   }
 
@@ -71,16 +75,30 @@ class Invoices extends React.Component{
     let newInvoice = this.state.newInvoice;
     newInvoice.items.push(this.state.invoice_item);
     console.log("Added " + JSON.stringify(this.state.invoice_item) + " to invoice");
+    //compute gross amount, GST and total
+    newInvoice.gross_amount = Number(newInvoice.gross_amount) + Number(this.state.invoice_item.cost);
+    newInvoice.afterGST = parseFloat(newInvoice.gross_amount * 1.07).toFixed(2);
+    newInvoice.gross_amount = parseFloat(newInvoice.gross_amount).toFixed(2);
+    newInvoice.total_amount = newInvoice.afterGST;
+
     this.setState({
       productsData:productsData,
-      invoice_item:{}
+      invoice_item:{},
+      newInvoice:newInvoice
     });
   }  
 
+  handleDiscount(event){
+    let newInvoice = this.state.newInvoice;
+    newInvoice.discount = parseFloat(event.target.value).toFixed(2);
+    newInvoice.total_amount = parseFloat(Number(newInvoice.afterGST) - Number(newInvoice.discount)).toFixed(2);
+    this.setState({newInvoice:newInvoice,})
+  }
+
   render() {
+
     return (
     	<div className = "invoicesWrapper container">
-    		<h3> Add item </h3>
         <NewInvoiceItem
           handleSelect = {(e) => this.handleSelect(e)}
           handleChange = {(e) => this.handleChange(e)}  
@@ -89,7 +107,10 @@ class Invoices extends React.Component{
           productsData = {this.state.productsData}
           invoice_item = {this.state.invoice_item} 
         />
-        <NewInvoice/>
+        <NewInvoice 
+          invoice = {this.state.newInvoice} 
+          handleDiscount = {(e) => this.handleDiscount(e)}
+        />
       </div>   
     );
   }  

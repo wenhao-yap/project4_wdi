@@ -9,11 +9,12 @@ module.exports = (dbPool) => {
     },
 
     create: (newInvoice,callback) => {
-      const queryString = 'INSERT INTO invoices (client,gross_amount,discount,total_amount,paid_status,amount_payable,date)\
-      VALUES($1,$2,$3,$4,$5,$6,$7) returning id'
+      const queryString = 'INSERT INTO invoices (client,gross_amount,afterGST,discount,total_amount,paid_status,amount_payable,date)\
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8) returning id'
   	  const values = [
         newInvoice.client,
         newInvoice.gross_amount,
+        newInvoice.afterGST,
         newInvoice.discount,
         newInvoice.total_amount,
         newInvoice.paid_status,
