@@ -2,6 +2,7 @@ import React from 'react';
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../Util';
 import ProductsList from './productsList';
 import ProductsAdd from './productsAdd';
+import { withRouter } from 'react-router-dom';
 
 class Products extends React.Component{
 	constructor(){
@@ -34,6 +35,8 @@ class Products extends React.Component{
     event.preventDefault();
     event.target.reset();
     let newProduct = this.state.newProduct;
+    newProduct.price = parseFloat(newProduct.price);
+    newProduct.quantity = parseInt(newProduct.price,10);    
     postAPI('/api/products/new',newProduct);
     let data = this.state.productsData;
     newProduct.id = data[data.length-1].id + 1;
@@ -69,4 +72,4 @@ class Products extends React.Component{
   }  
 }
 
-export default Products;
+export default withRouter(Products);

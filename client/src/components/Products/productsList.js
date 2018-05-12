@@ -2,7 +2,7 @@ import React from 'react';
 import {postAPI,tableOptions,deleteAPI} from '../../Util';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, {textFilter,numberFilter} from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 class ProductsList extends React.Component {
@@ -16,6 +16,8 @@ class ProductsList extends React.Component {
 
 	onAfterSaveCell(value, changed, newRow){
 		console.log("Selected cell with value: " + value);
+    	newRow.price = parseFloat(newRow.price);
+    	newRow.quantity = parseInt(newRow.quantity,10);
 		console.log(newRow);
 		this.setState({updateProduct:newRow});
 		postAPI('/api/products/edit',newRow);
@@ -52,13 +54,13 @@ class ProductsList extends React.Component {
 			  dataField: 'price',
 			  text: 'Price(SGD)',
 			  align: 'center',
-			  filter: textFilter(),
+			  filter: numberFilter(),
 			  sort: true
 			}, {
 			  dataField: 'quantity',
 			  text: 'Quantity',
 			  align: 'center',
-			  filter: textFilter(),
+			  filter: numberFilter(),
 			  sort: true
 			}
 		]
