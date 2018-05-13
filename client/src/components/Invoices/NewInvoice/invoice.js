@@ -65,6 +65,9 @@ class Invoice extends React.Component{
     items[product.index].name = product.name;
     items[product.index].product_id = product.id;
     items[product.index].price = product.price;
+    if(items[product.index].quantity){
+      items[product.index].amount = (Number(items[product.index].price) * Number(items[product.index].quantity)).toFixed(2);
+    }
     this.setState({items:items});  
   }
 
