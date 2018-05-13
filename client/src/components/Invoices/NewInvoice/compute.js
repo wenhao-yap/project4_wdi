@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form } from 'semantic-ui-react'
 
 class Compute extends React.Component{
 
@@ -7,30 +7,14 @@ class Compute extends React.Component{
 		return(
 			<div className="invoiceCompute">
 	      <Form>
-	       	<FormGroup row>
-	       		<Label sm={2}>Gross Amount</Label>
-	       		<Col sm={10}>
-	        		<Input type="text" value={this.props.compute.gross_amount} disabled/>
-	        	</Col>
-	        </FormGroup>
-	       	<FormGroup row>
-	       		<Label sm={2}>GST(7%)</Label>
-	       		<Col sm={10}>
-	        		<Input type="text" value={this.props.compute.GST} disabled/>
-	        	</Col>
-	        </FormGroup>
-	        <FormGroup row>
-	       		<Label sm={2}>Discount</Label>
-	       		<Col sm={10}>
-	        		<Input type="text" name="discount" onChange={this.props.handleDiscount}/>
-	        	</Col>
-	        </FormGroup>
-	       	<FormGroup row>
-	       		<Label sm={2}>Net Amount</Label>
-	       		<Col sm={10}>
-	        		<Input type="text" value={this.props.compute.net_amount} disabled/>
-	        	</Col>
-	        </FormGroup>	        		        
+	      	<Form.Group widths='equal'>
+      			<Form.Input fluid label='Gross Amount' value={this.props.compute.gross_amount} readOnly />
+      			<Form.Input fluid label='GST(7%)' value={this.props.compute.GST} readOnly />	      		
+	      	</Form.Group>
+	      	<Form.Group widths='equal'>
+      			<Form.Input fluid label='Discount' onChange={this.props.handleDiscount} />
+      			<Form.Input fluid label='Net Amount' value={this.props.compute.net_amount} readOnly />	      		
+	      	</Form.Group>        		        
 	      </Form>
 	      <p>
 	      	<button onClick={this.props.handleCompute}>Compute Net Amount</button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider } from 'semantic-ui-react'
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../../Util';
 import ItemForm from './itemForm';
 import Compute from './compute';
@@ -149,6 +150,7 @@ class Invoice extends React.Component{
             addRow = {(e) => this.addRow(e)}
     		  />
         }
+        <Divider />
         <Compute 
         	items = {this.state.items}
         	compute = {this.state.compute}
