@@ -6,7 +6,6 @@ class Compute extends React.Component{
 	render(){ 
 		return(
 			<div className="invoiceCompute">
-				<p><button onClick={this.props.handleCompute}>Compute Net Amount</button></p>
 	      <Form>
 	       	<FormGroup row>
 	       		<Label sm={2}>Gross Amount</Label>
@@ -33,6 +32,10 @@ class Compute extends React.Component{
 	        	</Col>
 	        </FormGroup>	        		        
 	      </Form>
+	      <p>
+	      	<button onClick={this.props.handleCompute}>Compute Net Amount</button>
+	      	<button onClick={this.props.handleConfirm}>Confirm order</button>
+	      </p>
       </div>
 		)
 	}

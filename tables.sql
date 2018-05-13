@@ -8,14 +8,10 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS invoices (
   id SERIAL PRIMARY KEY,
-  client TEXT,
   gross_amount DECIMAL(18,2),
-  afterGST DECIMAL(18,2),
+  GST DECIMAL(18,2),
   discount DECIMAL(18,2),
-  total_amount DECIMAL(18,2),
-  paid_status TEXT,
-  amount_payable DECIMAL(18,2),
-  date TIMESTAMP
+  net_amount DECIMAL(18,2)
 );
 
 CREATE TABLE IF NOT EXISTS invoice_item (
@@ -23,5 +19,5 @@ CREATE TABLE IF NOT EXISTS invoice_item (
   products_id INT REFERENCES products(id),
   invoices_id INT REFERENCES invoices(id),
   quantity INT,
-  cost DECIMAL(18,2)
+  amount DECIMAL(18,2)
 );

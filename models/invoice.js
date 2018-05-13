@@ -9,22 +9,31 @@ module.exports = (dbPool) => {
     },
 
     create: (newInvoice,callback) => {
-      const queryString = 'INSERT INTO invoices (client,gross_amount,afterGST,discount,total_amount,paid_status,amount_payable,date)\
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8) returning id'
+      console.log(newInvoice);
+      const queryString = 'INSERT INTO invoices (gross_amount,GST,discount,net_amount)\
+      VALUES($1,$2,$3,$4) returning id'
   	  const values = [
-        newInvoice.client,
         newInvoice.gross_amount,
-        newInvoice.afterGST,
+        newInvoice.GST,
         newInvoice.discount,
-        newInvoice.total_amount,
-        newInvoice.paid_status,
-        newInvoice.amount_payable,
-        newInvoice.date
+        newInvoice.net_amount
   	  ];
 
       dbPool.query(queryString,values, (error, queryResult) => {
         if(error) throw error;
-          callback(error, queryResult);
+
+        let invoices_id = queryResult.rows[0].id;
+        let secondQuery = 'INSERT INTO invoice_item (products_id,invoices_id,quantity,amount) VALUES ';
+        let str = '';
+        for(let item of newInvoice.items){
+          str += '(' + item.product_id.toString() + ',' + invoices_id.toString() + ',' + item.quantity.toString() + ',' + item.amount.toString() + '),';
+        }
+        secondQuery = (secondQuery + str).replace(/.$/g, "");
+        console.log(secondQuery);
+
+        dbPool.query(secondQuery,(error,secondResult) => {
+          callback(error, secondResult);
+        })
       });	    	
     }
 	}

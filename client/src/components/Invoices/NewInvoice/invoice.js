@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import {getAPI} from '../../../Util';
+import {getAPI,postAPI} from '../../../Util';
 import ItemForm from './itemForm';
 import Compute from './compute';
 
@@ -91,10 +91,24 @@ class Invoice extends React.Component{
     this.handleCompute();
   }
 
+  handleConfirm(e){
+    //push data to server
+    let dataPackage = {
+      items:this.state.items,
+      gross_amount: this.state.compute.gross_amount,
+      GST: this.state.compute.GST,
+      discount: this.state.compute.discount,
+      net_amount: this.state.compute.net_amount      
+    };
+    postAPI('/api/invoices/new',dataPackage);
+    console.log(dataPackage);
+    console.log("sent dataPackage");
+  }
+
 	render(){
 		return(
 			//invoice table with forms inside. each time a add function is click,
-				//append a new row to the table with another form
+			//append a new row to the table with another form
 			// invoice computation
 			<div className="container">
 				<Table bordered hover>
@@ -122,6 +136,7 @@ class Invoice extends React.Component{
         	compute = {this.state.compute}
         	handleCompute = {(e) => this.handleCompute(e)}
         	handleDiscount = {(e) => this.handleDiscount(e)}
+          handleConfirm = {(e) => this.handleConfirm(e)}
         />
 			</div>
 		)

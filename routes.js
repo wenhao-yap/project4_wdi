@@ -7,6 +7,6 @@ module.exports = (app,db, request) => {
   app.post('/api/products/edit', product.edit(db));
   app.delete('/api/products/delete', product.remove(db));
 
-  app.post('/api/invoices', invoice.get(db));
-  app.post('/api/invoices', invoice.create(db));
+  app.get('/api/invoices', invoice.get(db));
+  app.post('/api/invoices/new', invoice.create(db));
 };

@@ -27,7 +27,8 @@ export let postAPI = (url,data) => {
     throw new Error("Bad response from server");
   }
   return response.json();       
-  }).catch(error => console.error('Error:', error));
+  }).catch(error => console.error('Error:', error))
+  .then(response => console.log('Success:', response));
 }
 
 export const tableOptions = {

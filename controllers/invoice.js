@@ -14,7 +14,6 @@ const get = (db) => {
 
 const create = (db) => {
   return (request, response) => {
-    console.log(request.body);
     db.invoice.create(request.body,(error, queryResult) => {
     	response.send(JSON.stringify(queryResult.rows));
     })

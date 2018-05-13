@@ -1,5 +1,6 @@
 const pg = require('pg');
 const product = require('./models/product');
+const invoice = require('./models/invoice');
 
 /**
  * ===================================
@@ -21,5 +22,6 @@ pool.on('error', (err) => {
 
 module.exports = {
   pool: pool,
-  product: product(pool)
+  product: product(pool),
+  invoice: invoice(pool)
 };
