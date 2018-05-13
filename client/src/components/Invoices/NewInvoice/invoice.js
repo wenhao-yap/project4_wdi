@@ -1,15 +1,22 @@
 import React from 'react';
-import { Table } from 'reactstrap';
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../../Util';
 import ItemForm from './itemForm';
 import Compute from './compute';
+import './invoice.css';
 
 class Invoice extends React.Component{
 	constructor(){
 		super();
 		this.state = {
 			productsData:[],
-			items:[],
+			items:[{
+          product_id: '',
+          name: '',
+          price: '',
+          quantity: '',
+          amount: ''      
+        }
+      ],
 			compute:{
 			  gross_amount: 0,
 	      GST: 0,
@@ -17,7 +24,6 @@ class Invoice extends React.Component{
 	      net_amount: 0
 	    }
 		};
-		this.addRow = this.addRow.bind(this);
 	}
 
 	 componentDidMount() {
@@ -60,6 +66,7 @@ class Invoice extends React.Component{
   }
 
   handleSelect(e){
+    console.log(e.target.value);
     let product = JSON.parse(e.target.value);
     let items = this.state.items;
     items[product.index].name = product.name;
@@ -132,26 +139,16 @@ class Invoice extends React.Component{
 			//append a new row to the table with another form
 			// invoice computation
 			<div className="container">
-				<Table bordered hover>
-      		<thead>
-        		<tr>
-              <th>#</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Amount</th>
-              <th><button onClick={this.addRow}>ADD</button></th>
-       			</tr>
-     		 	</thead>
-     		 	{this.state.productsData.length > 0 && 
-	      		<ItemForm 
-	      			items = {this.state.items}
-	      			productsData = {this.state.productsData}
-	      			handleChange = {(e) => this.handleChange(e)}
-	      			handleSelect = {(e) => this.handleSelect(e)}
-	      			removeRow = {(e) => this.removeRow(e)}
-      		/>}
-        </Table>
+        {this.state.productsData.length > 0 && 
+      		<ItemForm 
+      			items = {this.state.items}
+      			productsData = {this.state.productsData}
+      			handleChange = {(e) => this.handleChange(e)}
+      			handleSelect = {(e) => this.handleSelect(e)}
+      			removeRow = {(e) => this.removeRow(e)}
+            addRow = {(e) => this.addRow(e)}
+    		  />
+        }
         <Compute 
         	items = {this.state.items}
         	compute = {this.state.compute}

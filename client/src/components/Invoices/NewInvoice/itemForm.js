@@ -1,4 +1,6 @@
 import React from 'react';
+import { Table,Input,Button } from 'semantic-ui-react';
+import './invoice.css';
 
 class ItemForm extends React.Component{
 	constructor(props){
@@ -21,24 +23,44 @@ class ItemForm extends React.Component{
 			item.index = i;
 			let itemStr = JSON.stringify(item);
 			return(
-				<tr key={i+1}>
-					<td>{i+1}</td>
-					<td>
-            <select defaultValue="" onChange={this.props.handleSelect}>
+				<Table.Row key={i+1}>
+					<Table.Cell>{i+1}</Table.Cell>
+					<Table.Cell>
+            <select defaultValue="" onChange={this.props.handleSelect} className="newInvoiceField selectField">
             	<option value="" disabled> </option>
             	{products}
             </select>
-					</td>
-					<td>{item.price}</td>
-					<td><input type="text" name={quantity} onChange={this.props.handleChange}/></td>
-					<td>{item.amount}</td>
-					<td><button name={itemStr} onClick={this.props.removeRow}>Delete</button></td>
-				</tr>
+					</Table.Cell>
+					<Table.Cell>
+						<Input type="text" value={item.price} size='small' label={{content:'$'}} labelPosition='left' disabled className="newInvoiceField"/>
+					</Table.Cell>
+					<Table.Cell>
+						<Input type="text" name={quantity} onChange={this.props.handleChange} size='small' label={{ icon: 'asterisk' }} labelPosition='right corner' placeholder='Enter quantity...' className="newInvoiceField"/>
+					</Table.Cell>
+					<Table.Cell>
+						<Input type="text" value={item.amount} size='small' label={{content:'$'}} labelPosition='left' disabled className="newInvoiceField"/>
+					</Table.Cell>
+					<Table.Cell><Button icon='trash' name={itemStr} onClick={this.props.removeRow} className="black"/></Table.Cell>
+				</Table.Row>
 			)
 		})
 
 		return(
-			<tbody>{rows}</tbody>
+	  	<Table celled striped>
+    		<Table.Header>
+      		<Table.Row>
+            <Table.HeaderCell>#</Table.HeaderCell>
+            <Table.HeaderCell>Product</Table.HeaderCell>
+            <Table.HeaderCell>Price</Table.HeaderCell>
+            <Table.HeaderCell>Quantity</Table.HeaderCell>
+            <Table.HeaderCell>Amount</Table.HeaderCell>
+            <Table.HeaderCell>
+            	<Button icon='add' onClick={this.props.addRow} className="blue"/>
+            </Table.HeaderCell>
+     			</Table.Row>
+   		 	</Table.Header>
+				<Table.Body>{rows}</Table.Body>
+			</Table>
 		)
 	}
 }
