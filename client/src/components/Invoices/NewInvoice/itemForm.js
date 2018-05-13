@@ -14,7 +14,7 @@ class ItemForm extends React.Component{
 				product.index = i;
 	  		let productStr = JSON.stringify(product);
 	  		return(
-	  			<option key={product.id} value={productStr}>{product.name}</option>
+	  			<option key={product.id} value={productStr}>{product.name}({product.quantity})</option>
 	  		)	
 	  	})
 			let quantity = "quantity_" + i;

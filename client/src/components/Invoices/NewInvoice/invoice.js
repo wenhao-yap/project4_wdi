@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import {getAPI,postAPI} from '../../../Util';
+import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../../Util';
 import ItemForm from './itemForm';
 import Compute from './compute';
 
@@ -49,19 +49,18 @@ class Invoice extends React.Component{
 		console.log("row deleted");
 	}
 
+  //handle onChange event of the quantity
 	handleChange(e){
     let items = this.state.items;
     let type = (e.target.name).match(/^[^_]+/)[0];
     let index = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);
    	items[index][type] = e.target.value;
-		items[index].amount = parseFloat(e.target.value * items[index].price).toFixed(2); 
+		items[index].amount = parseFloat(e.target.value * items[index].price).toFixed(2);
   	this.setState({items:items});		
   }
 
   handleSelect(e){
     let product = JSON.parse(e.target.value);
-    console.log(product);
-
     let items = this.state.items;
     items[product.index].name = product.name;
     items[product.index].product_id = product.id;
@@ -92,9 +91,18 @@ class Invoice extends React.Component{
   }
 
   handleConfirm(e){
+    //remove from productsData the quantity selected
+    let productsData = this.state.productsData;
+    let items = this.state.items;
+    for (let i = 0; i<this.state.items.length; i++){
+      let productsIndex = getIndexIfObjWithOwnAttr(productsData,'id',items[i].product_id);
+      productsData[productsIndex].quantity -= parseInt(items[i].quantity,10);
+    }
+
     //push data to server
     let dataPackage = {
-      items:this.state.items,
+      productsData:productsData,
+      items:items,
       gross_amount: this.state.compute.gross_amount,
       GST: this.state.compute.GST,
       discount: this.state.compute.discount,
@@ -102,7 +110,17 @@ class Invoice extends React.Component{
     };
     postAPI('/api/invoices/new',dataPackage);
     console.log(dataPackage);
-    console.log("sent dataPackage");
+    console.log("sent dataPackage, resetting form");
+    this.setState({
+      productsData: productsData,
+      items:[],
+      compute:{
+        gross_amount: 0,
+        GST: 0,
+        discount: 0,
+        net_amount: 0
+      }
+    })
   }
 
 	render(){
