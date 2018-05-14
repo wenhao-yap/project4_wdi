@@ -1,4 +1,7 @@
 import React from 'react';
+import Moment from 'moment'
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../../Util';
 import ItemForm from './itemForm';
 import Compute from './compute';
@@ -22,13 +25,17 @@ class Invoice extends React.Component{
 	      GST: 0,
 	      discount: 0,
 	      net_amount: 0
-	    }
+	    },
+      date:''
 		};
 	}
 
 	 componentDidMount() {
     getAPI('/api/products', (res) => {
-      this.setState({productsData: res})
+      this.setState({
+        productsData: res,
+        date: new Date()
+      })
     }) 
   }
 
@@ -54,6 +61,11 @@ class Invoice extends React.Component{
 		console.log(removeItem);
 		console.log("row deleted");
 	}
+
+  handleTime(e){
+    console.log(e);
+    this.setState({date:e});
+  }
 
   //handle onChange event of the quantity
 	handleChange(e){
@@ -134,11 +146,16 @@ class Invoice extends React.Component{
   }
 
 	render(){
+    Moment.locale('en');
+    momentLocalizer();
+
 		return(
-			//invoice table with forms inside. each time a add function is click,
-			//append a new row to the table with another form
-			// invoice computation
 			<div className="container">
+        <label className="time">Time</label>
+        <DateTimePicker
+          onChange = {(e) => this.handleTime(e)} 
+          defaultValue = {new Date()} 
+        />
         {this.state.productsData.length > 0 && 
       		<ItemForm 
       			items = {this.state.items}

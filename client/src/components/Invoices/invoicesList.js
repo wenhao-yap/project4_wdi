@@ -1,7 +1,5 @@
 import React from 'react';
-import { Table,Input,Label } from 'semantic-ui-react';
-
-//need to add the quantity here
+import { Table,Input,Label} from 'semantic-ui-react';
 
 class InvoicesList extends React.Component{
   render() {
@@ -38,7 +36,7 @@ class InvoicesList extends React.Component{
      			</Table.Row>
    		 	</Table.Header>
 				<Table.Body>{rows}</Table.Body>
-			</Table> 
+			</Table>
     );
   }  
 }

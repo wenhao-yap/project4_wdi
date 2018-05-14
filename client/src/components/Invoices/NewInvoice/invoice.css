@@ -2,6 +2,10 @@ th{
 	background: white !important;
 }
 
+.time{
+  font-weight: bold;
+}
+
 .newInvoiceField{
 	width:100%;
 }
