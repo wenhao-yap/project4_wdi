@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table,Input,Button,Header } from 'semantic-ui-react';
+import { Table,Input,Button } from 'semantic-ui-react';
 import './invoice.css';
 
 class ItemForm extends React.Component{
@@ -48,11 +48,6 @@ class ItemForm extends React.Component{
 		return(
 	  	<Table celled selectable>
     		<Table.Header>
-    			<Table.Row>
-    				<Table.HeaderCell colSpan='6'>
-    					<Header size='medium' textAlign='center' color='blue'>Products</Header>
-    				</Table.HeaderCell>
-    			</Table.Row>
       		<Table.Row>
             <Table.HeaderCell>#</Table.HeaderCell>
             <Table.HeaderCell>Product</Table.HeaderCell>

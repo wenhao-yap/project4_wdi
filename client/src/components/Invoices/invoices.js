@@ -55,7 +55,7 @@ class Invoices extends React.Component{
 
   render() {
     const panes = [
-      { menuItem: 'View Invoices', render: () => <Tab.Pane attached={false}>
+      { menuItem: 'Manage Invoices', render: () => <Tab.Pane attached={false}>
         {this.state.invoicesData ? (<InvoicesList invoicesData = {this.state.invoicesData}/>
         ):(<h2>Loading...</h2>)}
         </Tab.Pane> },
