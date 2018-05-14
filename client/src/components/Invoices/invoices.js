@@ -11,14 +11,19 @@ class Invoices extends React.Component{
     this.state = {
       invoicesData:[]
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData(){
     getAPI('/api/invoices', (res) => {
       let invoices = this.sorting(res);
       console.log(invoices);
       this.setState({invoicesData: invoices})
-    }) 
+    })    
   }
 
   sorting(array){
@@ -42,6 +47,12 @@ class Invoices extends React.Component{
     return output;
   }
 
+  handleChange(e,data){
+    if(data.activeIndex === 0){
+      this.getData();  
+    }
+  }
+
   render() {
     const panes = [
       { menuItem: 'View Invoices', render: () => <Tab.Pane attached={false}>
@@ -52,7 +63,7 @@ class Invoices extends React.Component{
     ]
     return (
     	<div className = "invoicesWrapper container">
-        <Tab menu={{ pointing: true }} panes={panes} />
+        <Tab menu={{ pointing: true }} panes={panes} onTabChange={this.handleChange}/>
       </div>   
     );
   }  

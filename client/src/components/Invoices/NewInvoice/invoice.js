@@ -26,15 +26,14 @@ class Invoice extends React.Component{
 	      discount: 0,
 	      net_amount: 0
 	    },
-      date:''
+      created_date:new Date()
 		};
 	}
 
 	 componentDidMount() {
     getAPI('/api/products', (res) => {
       this.setState({
-        productsData: res,
-        date: new Date()
+        productsData: res
       })
     }) 
   }
@@ -64,7 +63,7 @@ class Invoice extends React.Component{
 
   handleTime(e){
     console.log(e);
-    this.setState({date:e});
+    this.setState({created_date:e});
   }
 
   //handle onChange event of the quantity
@@ -128,10 +127,10 @@ class Invoice extends React.Component{
       gross_amount: this.state.compute.gross_amount,
       GST: this.state.compute.GST,
       discount: this.state.compute.discount,
-      net_amount: this.state.compute.net_amount      
+      net_amount: this.state.compute.net_amount,
+      created_date: this.state.created_date     
     };
     postAPI('/api/invoices/new',dataPackage);
-    console.log(dataPackage);
     console.log("sent dataPackage, resetting form");
     this.setState({
       productsData: productsData,
@@ -151,7 +150,7 @@ class Invoice extends React.Component{
 
 		return(
 			<div className="container">
-        <label className="time">Time</label>
+        <label className="labelForm">Time</label>
         <DateTimePicker
           onChange = {(e) => this.handleTime(e)} 
           defaultValue = {new Date()} 

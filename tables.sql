@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS invoices (
   gross_amount DECIMAL(18,2),
   GST DECIMAL(18,2),
   discount DECIMAL(18,2),
-  net_amount DECIMAL(18,2)
+  net_amount DECIMAL(18,2),
+  created_date text
 );
 
 CREATE TABLE IF NOT EXISTS invoice_item (

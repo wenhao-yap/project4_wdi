@@ -1,7 +1,7 @@
 module.exports = (dbPool) => {
 	return{
     get: (callback) => {
-      const queryString = 'SELECT invoices.id,invoices.gross_amount,invoices.gst,invoices.discount,invoices.net_amount, products.name, invoice_item.quantity\
+      const queryString = 'SELECT invoices.id,invoices.gross_amount,invoices.gst,invoices.discount,invoices.net_amount,invoices.created_date, products.name, invoice_item.quantity\
         FROM ((invoice_item\
         INNER JOIN invoices ON invoice_item.invoices_id = invoices.id)\
         INNER JOIN products ON invoice_item.products_id = products.id)';
@@ -13,13 +13,14 @@ module.exports = (dbPool) => {
 
     create: (newInvoice,callback) => {
       console.log(newInvoice);
-      const queryString = 'INSERT INTO invoices (gross_amount,GST,discount,net_amount)\
-      VALUES($1,$2,$3,$4) returning id'
+      const queryString = 'INSERT INTO invoices (gross_amount,GST,discount,net_amount,created_date)\
+      VALUES($1,$2,$3,$4,$5) returning id'
   	  const values = [
         newInvoice.gross_amount,
         newInvoice.GST,
         newInvoice.discount,
-        newInvoice.net_amount
+        newInvoice.net_amount,
+        newInvoice.created_date
   	  ];
 
       dbPool.query(queryString,values, (error, queryResult) => {
