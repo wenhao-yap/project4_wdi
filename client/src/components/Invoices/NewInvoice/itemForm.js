@@ -46,7 +46,7 @@ class ItemForm extends React.Component{
 		})
 
 		return(
-	  	<Table celled striped>
+	  	<Table celled selectable>
     		<Table.Header>
       		<Table.Row>
             <Table.HeaderCell>#</Table.HeaderCell>

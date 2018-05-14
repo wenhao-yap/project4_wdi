@@ -1,7 +1,10 @@
 module.exports = (dbPool) => {
 	return{
     get: (callback) => {
-      const queryString = 'SELECT * FROM invoices';
+      const queryString = 'SELECT invoices.id,invoices.gross_amount,invoices.gst,invoices.discount,invoices.net_amount, products.name, invoice_item.quantity\
+        FROM ((invoice_item\
+        INNER JOIN invoices ON invoice_item.invoices_id = invoices.id)\
+        INNER JOIN products ON invoice_item.products_id = products.id)';
       dbPool.query(queryString, (error, queryResult) => {
         if(error) throw error;
         callback(error, queryResult);
