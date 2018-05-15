@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table,Input,Button } from 'semantic-ui-react';
+import { Table,Input,Button,Dropdown } from 'semantic-ui-react';
 import './invoice.css';
 
 class ItemForm extends React.Component{
@@ -12,24 +12,29 @@ class ItemForm extends React.Component{
 
 	render(){ 
 		let rows = this.props.items.map((item,i) => {
-			let products = this.state.productsAvailable.map(product => {
+			let productOptions = [];
+			this.state.productsAvailable.forEach(product => {
 				product.index = i;
-	  		let productStr = JSON.stringify(product);
-	  		return(
-	  			<option key={product.id} value={productStr}>{product.name}({product.quantity})</option>
-	  		)	
+	  		let option = {
+	  			key:product.id,
+	  			value:JSON.stringify(product),
+	  			text:product.name
+	  		}
+	  		productOptions.push(option);
 	  	})
 			let quantity = "quantity_" + i;
-			item.index = i;
 			let itemStr = JSON.stringify(item);
 			return(
 				<Table.Row key={i+1}>
 					<Table.Cell>{i+1}</Table.Cell>
 					<Table.Cell>
-            <select defaultValue="" onChange={this.props.handleSelect} className="newInvoiceField selectField">
-            	<option value="" disabled> </option>
-            	{products}
-            </select>
+            <Dropdown 
+            	placeholder='Choose product' 
+            	options={productOptions}
+            	search
+            	selection
+            	noResultsMessage='Try another search.' 
+            	onChange={this.props.handleSelect.bind(this,i)}/>
 					</Table.Cell>
 					<Table.Cell>
 						<Input type="text" value={item.price} size='small' label={{content:'$'}} labelPosition='left' disabled className="newInvoiceField"/>

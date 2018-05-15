@@ -28,11 +28,7 @@ class InvoicesStats extends React.Component{
         <Statistic>
           <Statistic.Value><Image src={invoiceIcon} inline circular />{this.props.dateRangeData.length}</Statistic.Value>
           <Statistic.Label>Invoices</Statistic.Label>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>${totalRevenue}</Statistic.Value>
-          <Statistic.Label>Total Revenue Earned</Statistic.Label>
-        </Statistic>          
+        </Statistic>         
         <Statistic>
           <Statistic.Value><Icon name='shopping cart'/>{totalProducts}</Statistic.Value>
           <Statistic.Label>Products Sold</Statistic.Label>
@@ -41,6 +37,10 @@ class InvoicesStats extends React.Component{
           <Statistic.Value>{uniqueProducts.length}</Statistic.Value>
           <Statistic.Label>Unique Products</Statistic.Label>
         </Statistic>
+        <Statistic>
+          <Statistic.Value>${totalRevenue.toFixed(2)}</Statistic.Value>
+          <Statistic.Label>Total Revenue Earned</Statistic.Label>
+        </Statistic>         
         <Statistic>
           <Statistic.Value><Image src={discountIcon} inline circular />${totalDiscount.toFixed(2)}</Statistic.Value>
           <Statistic.Label>Discount Given</Statistic.Label>

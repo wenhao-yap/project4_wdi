@@ -10,15 +10,3 @@ th{
 	width:100%;
 }
 
-.selectField{
-  border-color: rgb(222, 222, 223);
-  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  font-size: 14px;
-  box-sizing: border-box;
-  border-style: solid;
-  background-color: inherit;
-  padding: 8px 16px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none; 
-}

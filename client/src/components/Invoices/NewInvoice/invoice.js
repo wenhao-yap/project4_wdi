@@ -17,7 +17,7 @@ class Invoice extends React.Component{
           name: '',
           price: '',
           quantity: '',
-          amount: ''      
+          amount: ''    
         }
       ],
 			compute:{
@@ -26,7 +26,7 @@ class Invoice extends React.Component{
 	      discount: 0,
 	      net_amount: 0
 	    },
-      created_date:new Date()
+      created_date:new Date(),
 		};
 	}
 
@@ -76,15 +76,14 @@ class Invoice extends React.Component{
   	this.setState({items:items});		
   }
 
-  handleSelect(e){
-    console.log(e.target.value);
-    let product = JSON.parse(e.target.value);
+  handleSelect(index,e,data){
+    let product = JSON.parse(data.value);
     let items = this.state.items;
-    items[product.index].name = product.name;
-    items[product.index].product_id = product.id;
-    items[product.index].price = product.price;
-    if(items[product.index].quantity){
-      items[product.index].amount = (Number(items[product.index].price) * Number(items[product.index].quantity)).toFixed(2);
+    items[index].name = product.name;
+    items[index].product_id = product.id;
+    items[index].price = product.price;
+    if(items[index].quantity){
+      items[index].amount = (Number(items[index].price) * Number(items[index].quantity)).toFixed(2);
     }
     this.setState({items:items});  
   }
@@ -160,7 +159,7 @@ class Invoice extends React.Component{
       			items = {this.state.items}
       			productsData = {this.state.productsData}
       			handleChange = {(e) => this.handleChange(e)}
-      			handleSelect = {(e) => this.handleSelect(e)}
+      			handleSelect = {this.handleSelect.bind(this)}
       			removeRow = {(e) => this.removeRow(e)}
             addRow = {(e) => this.addRow(e)}
     		  />
