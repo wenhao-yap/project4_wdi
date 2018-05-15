@@ -1,12 +1,12 @@
 import React from 'react';
-import { Table,Label,Pagination,Statistic,Image,Icon,Header } from 'semantic-ui-react';
+import { Pagination,Header } from 'semantic-ui-react';
 import moment from 'moment';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import { formatDate, parseDate } from 'react-day-picker/moment';
 import './invoices.css';
-import invoiceIcon from './invoice.png';
-import discountIcon from './discount.png';
+import InvoicesStats from './invoicesStats';
+import InvoicesTable from './invoicesTable';
 
 class InvoicesList extends React.Component{
   constructor(){
@@ -31,9 +31,7 @@ class InvoicesList extends React.Component{
   }
   showFromMonth(){
     const { dateFrom, dateTo } = this.state;
-    if(!dateFrom){
-      return;
-    }
+    if(!dateFrom){return;}
     if (moment(dateTo).diff(moment(dateFrom), 'months') < 2) {
       this.dateTo.getDayPicker().showMonth(dateFrom);
     }
@@ -49,100 +47,35 @@ class InvoicesList extends React.Component{
   }
 
   render() {
-    //compute statistics
-    let totalRevenue = 0;
-    let totalProducts = 0;
-    let totalDiscount = 0;
-    let uniqueProducts = [];
-    this.props.invoicesData.forEach((item)=>{
-      item.quantity.forEach((product,j)=>{
-        totalProducts += item.quantity[j];
-      })
-      item.name.forEach((product)=>{
-        if(!uniqueProducts.includes(product)){
-          uniqueProducts.push(product);
-        } 
-      })
-      totalDiscount += Number(item.discount);  
-      totalRevenue += Number(item.net_amount);
-    })
-
     //for date range
     const { dateFrom, dateTo } = this.state;
-    const modifiers = { start: dateFrom, end: dateTo };    
+    const modifiers = { start: dateFrom, end: dateTo }; 
 
-    //for pagination
-    const lastIndex = this.state.activePage * this.state.itemsPerPage;
-    const firstIndex = lastIndex - this.state.itemsPerPage;
-    const totalPages = Math.ceil(this.props.invoicesData.length / this.state.itemsPerPage);
-
-    //for populating results
+    //for setting date range for results
     let dateRangeData = this.props.invoicesData;
     if(dateFrom && dateTo){
       this.props.invoicesData.forEach((item,i) => {
         let date = new Date(item.created_date).getTime();
         if (date > this.state.dateFrom.getTime() && date < this.state.dateTo.getTime()) {
-          console.log("date is in range");
         }
         else{
-          console.log('not in range');
           dateRangeData = dateRangeData.slice(0,i).concat(dateRangeData.slice(i + 1));
         }
       })
     }
 
-	  let rows = dateRangeData.slice(firstIndex,lastIndex).map((item,i) => {
-  		let product = item.name.map((product,j)=>{
-  				return(
-  					<Label color='black' key={product}>{product}
-  						<Label.Detail>{item.quantity[j]}</Label.Detail>
-  					</Label>
-  				)
-  			}
-  		);
-      let date = new Date(item.created_date).toUTCString();
-
-			return(
-				<Table.Row key={i}>
-					<Table.Cell>{item.id}</Table.Cell>
-					<Table.Cell>{product}</Table.Cell>
-					<Table.Cell>${item.gross_amount}</Table.Cell>
-          <Table.Cell>${item.discount}</Table.Cell>
-          <Table.Cell>${item.net_amount}</Table.Cell>
-          <Table.Cell>{date}</Table.Cell>
-				</Table.Row>
-			)  		
-  	});
+    //for pagination
+    const lastIndex = this.state.activePage * this.state.itemsPerPage;
+    const firstIndex = lastIndex - this.state.itemsPerPage;
+    const totalPages = Math.ceil(dateRangeData.length / this.state.itemsPerPage);
 
     return (
       <div>
-        <Statistic.Group>
-          <Statistic>
-            <Statistic.Value><Image src={invoiceIcon} inline circular />{this.props.invoicesData.length}</Statistic.Value>
-            <Statistic.Label>Invoices</Statistic.Label>
-          </Statistic>
-          <Statistic>
-            <Statistic.Value>${totalRevenue}</Statistic.Value>
-            <Statistic.Label>Total Revenue Earned</Statistic.Label>
-          </Statistic>          
-          <Statistic>
-            <Statistic.Value><Icon name='shopping cart'/>{totalProducts}</Statistic.Value>
-            <Statistic.Label>Products Sold</Statistic.Label>
-          </Statistic> 
-          <Statistic>
-            <Statistic.Value>{uniqueProducts.length}</Statistic.Value>
-            <Statistic.Label>Unique Products</Statistic.Label>
-          </Statistic>
-          <Statistic>
-            <Statistic.Value><Image src={discountIcon} inline circular />${totalDiscount.toFixed(2)}</Statistic.Value>
-            <Statistic.Label>Discount Given</Statistic.Label>
-          </Statistic>                 
-        </Statistic.Group>
-        <Header as='h2'>Select Date Range(time is 4am GMT)</Header>
+        <Header as='h1'>Select Date Range(time is 4am GMT)</Header>
         <div className="InputFromTo">
           <DayPickerInput
             value={dateFrom}
-            placeholder="From date"
+            placeholder="From date.."
             format="LL"
             formatDate={formatDate}
             parseDate={parseDate}
@@ -160,7 +93,7 @@ class InvoicesList extends React.Component{
             <DayPickerInput
               ref={el => (this.dateTo = el)}
               value={dateTo}
-              placeholder="To date"
+              placeholder="To date.."
               format="LL"
               formatDate={formatDate}
               parseDate={parseDate}
@@ -176,20 +109,13 @@ class InvoicesList extends React.Component{
             />
           </span>
         </div>
-        <Header as='h4'>Showing {dateRangeData.length} records:</Header>
-  			<Table celled selectable>
-      		<Table.Header>
-        		<Table.Row>
-              <Table.HeaderCell>#</Table.HeaderCell>
-              <Table.HeaderCell>Products(quantity)</Table.HeaderCell>
-              <Table.HeaderCell>Gross Amt</Table.HeaderCell>
-              <Table.HeaderCell>Discount</Table.HeaderCell>
-              <Table.HeaderCell>Net Amt</Table.HeaderCell>
-              <Table.HeaderCell>Date Created(UTC)</Table.HeaderCell>
-       			</Table.Row>
-     		 	</Table.Header>
-  				<Table.Body>{rows}</Table.Body>
-  			</Table>
+        <Header as='h2'>Statistics</Header>      
+        <InvoicesStats dateRangeData={dateRangeData}/>
+        <Header as='h2'>Records</Header>
+        <InvoicesTable
+          lastIndex = {lastIndex}
+          firstIndex = {firstIndex} 
+          dateRangeData={dateRangeData}/>
         <Pagination
           activePage={this.state.activePage}
           totalPages={totalPages} 
