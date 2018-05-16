@@ -3,6 +3,7 @@ import { Route, Link, withRouter } from "react-router-dom";
 import Home from './components/home'
 import Products from './components/Products/products';
 import Invoices from './components/Invoices/invoices';
+import Login from './components/Users/login';
 
 class App extends Component {
 
@@ -16,6 +17,8 @@ class App extends Component {
           <Link to="/products">Products</Link>
           <span>&nbsp;&nbsp;</span>
           <Link to="/invoices">Invoices</Link>
+          <span>&nbsp;&nbsp;</span>
+          <Link to="/login">Login</Link>          
 	      </nav>
 	      <main>
 	      	<Route 
@@ -29,6 +32,10 @@ class App extends Component {
             path='/invoices'
             render={() => (<Invoices/>)}
           />
+          <Route
+            path='/login'
+            render={() => (<Login/>)}
+          />          
 	      </main>
 		  </div>
     );
