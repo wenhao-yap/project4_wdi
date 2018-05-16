@@ -22,3 +22,10 @@ CREATE TABLE IF NOT EXISTS invoice_item (
   quantity INT,
   amount DECIMAL(18,2)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  username varchar(255) UNIQUE,
+  email varchar(255),
+  password TEXT
+);

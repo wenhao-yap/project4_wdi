@@ -3,18 +3,12 @@ import { Table,Input,Button,Dropdown } from 'semantic-ui-react';
 import './invoice.css';
 
 class ItemForm extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			productsAvailable:props.productsData
-		}
-	}
 
 	render(){ 
 		let rows = this.props.items.map((item,i) => {
 			let productOptions = [];
-			this.state.productsAvailable.forEach(product => {
-				product.index = i;
+
+			this.props.productsData.forEach(product => {
 	  		let option = {
 	  			key:product.id,
 	  			value:JSON.stringify(product),
@@ -23,14 +17,14 @@ class ItemForm extends React.Component{
 	  		productOptions.push(option);
 	  	})
 			let quantity = "quantity_" + i;
-			let itemStr = JSON.stringify(item);
 			return(
 				<Table.Row key={i+1}>
 					<Table.Cell>{i+1}</Table.Cell>
 					<Table.Cell>
-            <Dropdown 
+            <Dropdown
             	placeholder='Choose product' 
             	options={productOptions}
+            	text={this.props.items[i].name}
             	search
             	selection
             	noResultsMessage='Try another search.' 
@@ -45,7 +39,7 @@ class ItemForm extends React.Component{
 					<Table.Cell>
 						<Input type="text" value={item.amount} size='small' label={{content:'$'}} labelPosition='left' disabled className="newInvoiceField"/>
 					</Table.Cell>
-					<Table.Cell><Button icon='trash' name={itemStr} onClick={this.props.removeRow} className="black"/></Table.Cell>
+					<Table.Cell><Button icon='trash' onClick={this.props.removeRow.bind(this,i)} className="black"/></Table.Cell>
 				</Table.Row>
 			)
 		})

@@ -52,12 +52,14 @@ class Invoice extends React.Component{
 		console.log("row added"); 
 	}
 
-	removeRow(e){
+	removeRow(index,e){
 		let items = this.state.items;
-		let removeItem = JSON.parse(e.target.name);
-		items = items.slice(0,removeItem.index).concat(items.slice(removeItem.index + 1));
+    console.log(index);
+    console.log(items[index]);
+    console.log(items);
+		items = items.slice(0,index).concat(items.slice(index + 1));
+    console.log(items);
 		this.setState({items:items});
-		console.log(removeItem);
 		console.log("row deleted");
 	}
 
@@ -85,6 +87,7 @@ class Invoice extends React.Component{
     if(items[index].quantity){
       items[index].amount = (Number(items[index].price) * Number(items[index].quantity)).toFixed(2);
     }
+    console.log(data.value);
     this.setState({items:items});  
   }
 

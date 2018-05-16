@@ -1,6 +1,7 @@
 const pg = require('pg');
 const product = require('./models/product');
 const invoice = require('./models/invoice');
+const user = require('./models/user');
 
 /**
  * ===================================
@@ -11,7 +12,7 @@ const url = require('url');
 let configs = {
   host: '127.0.0.1',
   database: 'wdi4',
-  port: 5432
+  port: 5432  
 };
 
 const pool = new pg.Pool(configs);
@@ -23,5 +24,6 @@ pool.on('error', (err) => {
 module.exports = {
   pool: pool,
   product: product(pool),
-  invoice: invoice(pool)
+  invoice: invoice(pool),
+  user: user(pool)
 };
