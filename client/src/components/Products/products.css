@@ -1,3 +1,11 @@
 .newInvoiceField{
 	width:100%;
 }
+
+.ui.page.modals.transition.visible {
+    display: flex !important;
+}
+
+.paginationRight{
+	float:right;
+}

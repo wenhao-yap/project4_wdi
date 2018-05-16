@@ -41,10 +41,16 @@ module.exports = (dbPool) => {
       });   
     },
 
-    remove: (id, callback) => {
-      const queryString = 'DELETE FROM products WHERE id=$1';
-      const values = [id];
-      dbPool.query(queryString,values, (error, queryResult) => {
+    remove: (data, callback) => {
+      let queryString = 'DELETE FROM products WHERE id in (';
+      for(let i=0;i<data.length;i++){
+        queryString += data[i] + ',' 
+      }
+      queryString = queryString.replace(/.$/g, ")");
+      if(data.length === 1){
+        queryString = 'DELETE FROM products where id = ' + data[0];
+      }
+      dbPool.query(queryString, (error, queryResult) => {
         if(error) throw error;
           callback(error, queryResult);
       }); 

@@ -1,9 +1,10 @@
 import React from 'react';
-import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../Util';
-import { Container } from 'semantic-ui-react'
+import {getAPI,postAPI,deleteAPI,getIndexIfObjWithOwnAttr} from '../../Util';
+import { Container,Button, Header, Icon, Modal } from 'semantic-ui-react'
 import ProductsList from './productsList';
 import ProductsAdd from './productsAdd';
 import { withRouter } from 'react-router-dom';
+import './products.css';
 
 class Products extends React.Component{
 	constructor(){
@@ -18,7 +19,8 @@ class Products extends React.Component{
         quantity: ''
       },
       editMode : false,
-      productIDToDelete : []
+      deleteStore : [],
+      modalOpen: false
     }
   }
 
@@ -35,8 +37,6 @@ class Products extends React.Component{
   }
 
   handleSubmit(event){
-    event.preventDefault();
-    event.target.reset();
     let newProduct = this.state.newProduct;
     newProduct.price = parseFloat(newProduct.price).toFixed(2);
     newProduct.quantity = parseInt(newProduct.quantity,10);    
@@ -46,18 +46,18 @@ class Products extends React.Component{
     data.push(newProduct);
   	this.setState({
       newProduct: {},
-      data: data
+      data: data,
+      modalOpen:false
     });
   } 
 
-  // handleRemove(data){
-  //   let productsData = this.state.productsData;
-  //   let index = getIndexIfObjWithOwnAttr(productsData,'id',data.id);
-  //   console.log("index:" + index);
-  //   productsData = productsData.slice(0,index)
-  //                      .concat(productsData.slice(index + 1));
-  //   this.setState({productsData:productsData});
-  // }
+  handleOpen(e){
+    this.setState({ modalOpen: true });
+  }
+
+  handleClose(e){
+    this.setState({ modalOpen: false });
+  }
 
   handleMode(e){
     if(this.state.editMode){
@@ -78,7 +78,7 @@ class Products extends React.Component{
 
   keyPressEditCell(e){
     //update data for server
-    if(e.keyCode == 13){
+    if(e.keyCode === 13){
       console.log(e.target.value);
       let productsData = this.state.productsData;
       let type = (e.target.name).match(/^[^_]+/)[0];
@@ -91,8 +91,29 @@ class Products extends React.Component{
     }
   }
 
-  selectDelete(e){
-    //to be added for deletion
+  selectDelete(e,data){
+    let deleteStore = this.state.deleteStore;
+    if(data.checked){      
+      deleteStore.push(parseInt(data.name,10));
+      this.setState(deleteStore:deleteStore);         
+    } else {
+      this.setState({deleteStore: deleteStore.filter((id)=> { 
+          return id !== parseInt(data.name,10)
+      })});
+    }
+  }
+
+  handleDelete(e){
+    let productsData = this.state.productsData;
+    this.state.deleteStore.forEach(id => {
+      let index = getIndexIfObjWithOwnAttr(productsData,'id',id);
+      productsData = productsData.slice(0,index).concat(productsData.slice(index + 1));
+    })
+    deleteAPI('/api/products/delete',this.state.deleteStore);
+    this.setState({
+      productsData:productsData,
+      deleteStore:[]
+    });    
   }
 
   render() {
@@ -101,19 +122,30 @@ class Products extends React.Component{
     		<h1> Products </h1>
         {this.state.productsData.length > 0 &&
           <ProductsList
-            editCell={this} 
             productsData={this.state.productsData}
+            handleOpen={(e) => this.handleOpen(e)}
             editMode={this.state.editMode}
             handleMode = {(e) => this.handleMode(e)}
             keyPressEditCell = {(e) => this.keyPressEditCell(e)}
-            handleEditCell = {(e) => this.handleEditCell(e)}/>
+            handleEditCell = {(e) => this.handleEditCell(e)}
+            selectDelete = {(e,data) => this.selectDelete(e,data)}
+            deleteStore = {this.state.deleteStore}
+            handleDelete = {(e) => this.handleDelete(e)}/>
         }
-        <h2> Add product here </h2>
-        <ProductsAdd 
-          handleChange = {(e) => this.handleChange(e)} 
-          handleSubmit = {(e) => this.handleSubmit(e)} 
-          newProduct = {this.state.newProduct} 
-        />
+        <Modal open={this.state.modalOpen} onClose={(e) => this.handleClose(e)} size='small'>
+          <Header icon='shop' content='New product' />
+          <Modal.Content>
+            <ProductsAdd 
+              handleChange = {(e) => this.handleChange(e)}  
+              newProduct = {this.state.newProduct} 
+            />
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color='red' onClick={(e) => this.handleClose(e)} inverted>
+              <Icon name='remove' /> Cancel</Button>
+            <Button color='green' onClick={(e) => this.handleSubmit(e)} inverted><Icon name='checkmark' /> Submit</Button>
+          </Modal.Actions>
+        </Modal>
       </Container>   
     );
   }  
