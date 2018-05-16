@@ -3,6 +3,7 @@ import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../../Util';
+import { Container } from 'semantic-ui-react'
 import ItemForm from './itemForm';
 import Compute from './compute';
 import './invoice.css';
@@ -54,8 +55,6 @@ class Invoice extends React.Component{
 
 	removeRow(index,e){
 		let items = this.state.items;
-    console.log(index);
-    console.log(items[index]);
     console.log(items);
 		items = items.slice(0,index).concat(items.slice(index + 1));
     console.log(items);
@@ -151,7 +150,7 @@ class Invoice extends React.Component{
     momentLocalizer();
 
 		return(
-			<div className="container">
+			<Container>
         <label className="labelForm">Time</label>
         <DateTimePicker
           onChange = {(e) => this.handleTime(e)} 
@@ -174,7 +173,7 @@ class Invoice extends React.Component{
         	handleDiscount = {(e) => this.handleDiscount(e)}
           handleConfirm = {(e) => this.handleConfirm(e)}
         />
-			</div>
+			</Container>
 		)
 	}
 }

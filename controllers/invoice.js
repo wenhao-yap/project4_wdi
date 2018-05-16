@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 /**
  * ===========================================
  * Controller logic
@@ -5,10 +7,10 @@
  */
 
 const get = (db) => {
-  return (request, response) => {
+  return (request, response) => {    
     db.invoice.get((error, queryResult) => {
-    	response.send(queryResult.rows);
-    })
+      response.send(queryResult.rows);
+    })        
 	} 
 };
 

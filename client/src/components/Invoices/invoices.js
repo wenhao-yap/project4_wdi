@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Tab } from 'semantic-ui-react'
+import { Tab,Container } from 'semantic-ui-react'
 import {getAPI} from '../../Util';
 import Invoice from './NewInvoice/invoice';
 import InvoicesList from './invoicesList';
@@ -62,9 +62,9 @@ class Invoices extends React.Component{
       { menuItem: 'Add Invoice', render: () => <Tab.Pane attached={false}><Invoice/></Tab.Pane> },
     ]
     return (
-    	<div className = "invoicesWrapper container">
+    	<Container>
         <Tab menu={{ pointing: true }} panes={panes} onTabChange={this.handleChange}/>
-      </div>   
+      </Container>   
     );
   }  
 }

@@ -7,9 +7,12 @@ function verifyToken(req,res,next){
 	const bearerHeader = req.headers['authorization'];
 	//check if bearer is undefined
 	if(typeof bearerHeader !== 'undefined'){
-
+		const bearer = bearerHeader.split(' ');
+		//Get token from array
+		const bearerToken = bearer[1];
+		req.token = bearerToken;
+		next();
 	} else{
-		//Forbidden
 		res.status(403).json({failed:'Unauthorized Access'})
 	}
 }

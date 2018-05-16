@@ -1,5 +1,6 @@
 import React from 'react';
 import {getAPI,postAPI,getIndexIfObjWithOwnAttr} from '../../Util';
+import { Container } from 'semantic-ui-react'
 import ProductsList from './productsList';
 import ProductsAdd from './productsAdd';
 import { withRouter } from 'react-router-dom';
@@ -15,7 +16,9 @@ class Products extends React.Component{
         description: '',
         price: '',
         quantity: ''
-      }
+      },
+      editMode : false,
+      productIDToDelete : []
     }
   }
 
@@ -47,27 +50,71 @@ class Products extends React.Component{
     });
   } 
 
-  handleRemove(data){
-    let productsData = this.state.productsData;
-    let index = getIndexIfObjWithOwnAttr(productsData,'id',data.id);
-    console.log("index:" + index);
-    productsData = productsData.slice(0,index)
-                       .concat(productsData.slice(index + 1));
-    this.setState({productsData:productsData});
+  // handleRemove(data){
+  //   let productsData = this.state.productsData;
+  //   let index = getIndexIfObjWithOwnAttr(productsData,'id',data.id);
+  //   console.log("index:" + index);
+  //   productsData = productsData.slice(0,index)
+  //                      .concat(productsData.slice(index + 1));
+  //   this.setState({productsData:productsData});
+  // }
+
+  handleMode(e){
+    if(this.state.editMode){
+      this.setState({editMode:false});
+    } else {
+      this.setState({editMode:true});
+    }    
   } 
+
+  handleEditCell(e){
+    //update data for client
+    let productsData = this.state.productsData;
+    let type = (e.target.name).match(/^[^_]+/)[0];
+    let index = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);
+    productsData[index][type] = e.target.value;
+    this.setState({productsData:productsData});
+  }
+
+  keyPressEditCell(e){
+    //update data for server
+    if(e.keyCode == 13){
+      console.log(e.target.value);
+      let productsData = this.state.productsData;
+      let type = (e.target.name).match(/^[^_]+/)[0];
+      let index = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);     
+      let updatedProduct = productsData[index];
+      updatedProduct[type] = e.target.value;   
+      console.log(updatedProduct);
+      postAPI('/api/products/edit',updatedProduct);
+      this.setState({editMode:false})
+    }
+  }
+
+  selectDelete(e){
+    //to be added for deletion
+  }
 
   render() {
     return (
-    	<div className = "productsWrapper container">
+    	<Container>
     		<h1> Products </h1>
-        <ProductsList productsData={this.state.productsData} handleRemove = {(e) => this.handleRemove(e)}/>
+        {this.state.productsData.length > 0 &&
+          <ProductsList
+            editCell={this} 
+            productsData={this.state.productsData}
+            editMode={this.state.editMode}
+            handleMode = {(e) => this.handleMode(e)}
+            keyPressEditCell = {(e) => this.keyPressEditCell(e)}
+            handleEditCell = {(e) => this.handleEditCell(e)}/>
+        }
         <h2> Add product here </h2>
         <ProductsAdd 
           handleChange = {(e) => this.handleChange(e)} 
           handleSubmit = {(e) => this.handleSubmit(e)} 
           newProduct = {this.state.newProduct} 
         />
-      </div>   
+      </Container>   
     );
   }  
 }

@@ -1,104 +1,106 @@
 import React from 'react';
-import {postAPI,tableOptions,deleteAPI} from '../../Util';
-import BootstrapTable from 'react-bootstrap-table-next';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, {textFilter,numberFilter} from 'react-bootstrap-table2-filter';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import {postAPI,deleteAPI} from '../../Util';
+import { Button, Checkbox, Table, Container, Input } from 'semantic-ui-react'
+import './products.css';
 
 class ProductsList extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			updateProduct: {},
-			deleteProduct: {}
-		};
-	}
 
-	onAfterSaveCell(value, changed, newRow){
-		console.log("Selected cell with value: " + value);
-    	newRow.price = parseFloat(newRow.price).toFixed(2);
-    	newRow.quantity = parseInt(newRow.quantity,10);
-		console.log(newRow);
-		this.setState({updateProduct:newRow});
-		postAPI('/api/products/edit',newRow);
-	}
-
-	deleteCell(event){
-		console.log(this.state.deleteProduct);
-		deleteAPI('/api/products/delete',this.state.deleteProduct);
-		this.props.handleRemove(this.state.deleteProduct);
-		this.setState({deleteProduct:{}});
-	}
+	// deleteCell(event){
+	// 	console.log(this.state.deleteProduct);
+	// 	deleteAPI('/api/products/delete',this.state.deleteProduct);
+	// 	this.props.handleRemove(this.state.deleteProduct);
+	// 	this.setState({deleteProduct:{}});
+	// }
 
   render() {
-  	const columns = [
-  		{
-			  dataField: 'id',
-			  text: 'Product ID',
-			  headerAlign: 'center',
-			  align: 'center',
-			  sort: true
-			}, {
-			  dataField: 'name',
-			  text: 'Product Name',
-			  align: 'center',
-			  filter: textFilter(),
-			  sort: true
-			}, {
-			  dataField: 'description',
-			  text: 'Description',
-			  align: 'center',
-			  filter: textFilter(),
-			  sort: true
-			}, {
-			  dataField: 'price',
-			  text: 'Price(SGD)',
-			  align: 'center',
-			  filter: numberFilter(),
-			  sort: true
-			}, {
-			  dataField: 'quantity',
-			  text: 'Quantity',
-			  align: 'center',
-			  filter: numberFilter(),
-			  sort: true
-			}
-		]
-
-		const selectRow = {
-		  mode: 'radio',
-		  clickToSelect: true,
-		  clickToEdit: true
-		};
-
-		const rowEvents = {
-		  onClick: (e, row, rowIndex) => {
-		    this.setState({deleteProduct:row})
-		  }
-		};
+    let rows = this.props.productsData.map((item,i) => {
+      if(this.props.editMode){
+				return(
+					<Table.Row key={i}>
+        		<Table.Cell collapsing><Checkbox slider /></Table.Cell>
+          	<Table.Cell>{item.id}</Table.Cell>	
+		    		<Table.Cell>
+		    			<Input type="text"
+		    				name={"name_" + i} 
+		    				value={item.name}
+		    				onChange={this.props.handleEditCell}
+		    				onKeyDown={this.props.keyPressEditCell}
+		    				size='small' 
+		    				className='newInvoiceField'/>
+		    		</Table.Cell>
+	          <Table.Cell>
+	          	<Input type="text"
+	          		name={"description_" + i} 
+	          		value={item.description}
+	          		onChange={this.props.handleEditCell}
+	          		onKeyDown={this.props.keyPressEditCell}
+	          		size='small' 
+	          		className='newInvoiceField'/>
+	          </Table.Cell>
+	          <Table.Cell>
+	          	<Input type="text"
+	          		name={"price_" + i} 
+	          		value={item.price}
+	          		onChange={this.props.handleEditCell}
+	          		onKeyDown={this.props.keyPressEditCell}
+	          		size='small' 
+	          		className='newInvoiceField'/>
+	          </Table.Cell>
+	          <Table.Cell>
+	          	<Input type="text"
+	          		name={"quantity_" + i}
+	          		value={item.quantity}
+	          		onChange={this.props.handleEditCell}
+	          		onKeyDown={this.props.keyPressEditCell}
+	          		size='small' 
+	          		className='newInvoiceField'/>
+	          </Table.Cell>
+          </Table.Row>					
+				)      	
+      } else {
+      	return(
+					<Table.Row key={i}>
+        		<Table.Cell collapsing><Checkbox slider /></Table.Cell>
+          	<Table.Cell>{item.id}</Table.Cell>		    			
+		    		<Table.Cell>{item.name}</Table.Cell>
+	          <Table.Cell>{item.description}</Table.Cell>
+	          <Table.Cell>{item.price}</Table.Cell>
+	          <Table.Cell>{item.quantity}</Table.Cell>
+          </Table.Row>
+      	) 
+      }    
+    });  	
 
 	  return (
-	    <div className="container"> 
-	    	{Object.keys(this.state.updateProduct).length === 0 && this.state.updateProduct.constructor === Object ? 
-	    		(<h3>Hint: Double click cell to edit and press enter to confirm!</h3>):
-	    		(<h3>Updated {this.state.updateProduct.name} sucessfully!</h3>)} 	    			
-	    	<button onClick={(e) => this.deleteCell(e)} >Delete</button>
-	    	<BootstrapTable 
-		    	keyField='id' 
-		    	data={ this.props.productsData } 
-		    	columns={ columns }
-		    	cellEdit={ cellEditFactory({ 
-		    		mode: 'dbclick',
-		    		afterSaveCell: this.onAfterSaveCell.bind(this) 
-		    	}) }
-		    	filter={ filterFactory() }
-		    	pagination={ paginationFactory(tableOptions) }
-		    	selectRow={ selectRow }
-		    	rowEvents={ rowEvents }
-		    	hover condensed
-		    	noDataIndication="Table is Empty" 
-	    	/>
-	    </div>
+	    <Container>
+	    	<h1>*Impt* After editing, press enter to submit data to server</h1> 
+	      <Table compact celled definition>
+			    <Table.Header>
+			      <Table.Row>
+			        <Table.HeaderCell />
+			        <Table.HeaderCell>#</Table.HeaderCell>
+			        <Table.HeaderCell>Name</Table.HeaderCell>
+			        <Table.HeaderCell>Description</Table.HeaderCell>
+			        <Table.HeaderCell>Price</Table.HeaderCell>
+			        <Table.HeaderCell>Quantity</Table.HeaderCell>
+			      </Table.Row>
+			    </Table.Header>
+
+			    <Table.Body>{rows}</Table.Body>
+
+			    <Table.Footer fullWidth>
+			      <Table.Row>
+			        <Table.HeaderCell />
+			        <Table.HeaderCell colSpan='5'>
+			          <Button size='small' onClick= {this.props.handleMode} >Edit Mode</Button>
+			          <Button size='small'>Add product</Button>
+			          <Button size='small'>Approve</Button>
+			          <Button disabled size='small'>Approve All</Button>
+			        </Table.HeaderCell>
+			      </Table.Row>
+			    </Table.Footer>
+			  </Table>   			
+	    </Container>
 	  );
 	}
 }
