@@ -114,7 +114,7 @@ class ProductsList extends React.Component {
 			    <Table.Footer fullWidth>
 			      <Table.Row>
 			        <Table.HeaderCell />
-			        <Table.HeaderCell colSpan='5'>
+			        <Table.HeaderCell colSpan='6'>
 			          <Button size='small' onClick= {this.props.handleMode} >Edit Mode</Button>
 			          <Button size='small' onClick= {this.props.handleOpen}>Add product</Button>
 			          {this.props.deleteStore.length > 0 ? (
