@@ -31,7 +31,7 @@ class ProductsList extends React.Component {
           	<Table.Cell>{item.id}</Table.Cell>	
 		    		<Table.Cell>
 		    			<Input type="text"
-		    				name={"name_" + i} 
+		    				name={"name_" + item.id} 
 		    				value={item.name}
 		    				onChange={this.props.handleEditCell}
 		    				onKeyDown={this.props.keyPressEditCell}
@@ -40,7 +40,7 @@ class ProductsList extends React.Component {
 		    		</Table.Cell>
 		    		<Table.Cell>
 		    			<Input type="text"
-		    				name={"brand_" + i} 
+		    				name={"brand_" + item.id} 
 		    				value={item.brand || ''}
 		    				onChange={this.props.handleEditCell}
 		    				onKeyDown={this.props.keyPressEditCell}
@@ -49,7 +49,7 @@ class ProductsList extends React.Component {
 		    		</Table.Cell>		    		
 	          <Table.Cell>
 	          	<Input type="text"
-	          		name={"description_" + i} 
+	          		name={"description_" + item.id} 
 	          		value={item.description}
 	          		onChange={this.props.handleEditCell}
 	          		onKeyDown={this.props.keyPressEditCell}
@@ -58,7 +58,7 @@ class ProductsList extends React.Component {
 	          </Table.Cell>
 	          <Table.Cell>
 	          	<Input type="text"
-	          		name={"price_" + i} 
+	          		name={"price_" + item.id} 
 	          		value={item.price}
 	          		onChange={this.props.handleEditCell}
 	          		onKeyDown={this.props.keyPressEditCell}
@@ -68,7 +68,7 @@ class ProductsList extends React.Component {
 	          </Table.Cell>
 	          <Table.Cell>
 	          	<Input type="text"
-	          		name={"quantity_" + i}
+	          		name={"quantity_" + item.id}
 	          		value={item.quantity}
 	          		onChange={this.props.handleEditCell}
 	          		onKeyDown={this.props.keyPressEditCell}

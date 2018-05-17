@@ -124,8 +124,10 @@ class Products extends React.Component{
     //update data for client
     let productsData = this.state.productsData;
     let type = (e.target.name).match(/^[^_]+/)[0];
-    let index = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);
+    let id = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);
+    let index = getIndexIfObjWithOwnAttr(productsData,'id',id);
     productsData[index][type] = e.target.value;
+    console.log(productsData[index]);
     this.setState({productsData:productsData});
   }
 
