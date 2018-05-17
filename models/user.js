@@ -41,8 +41,7 @@ module.exports = (dbPool) => {
             if(results2){
               let payload = {
                 id: results.rows[0].id,
-                username:results.rows[0].username,
-                loggedIn:true
+                username:results.rows[0].username
               }
               console.log(payload);
               let token = jwt.sign(payload,'what-is-love',{expiresIn:'3h'});

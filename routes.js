@@ -26,6 +26,6 @@ module.exports = (app,db, request) => {
   app.get('/api/invoices', invoice.get(db));
   app.post('/api/invoices/new', invoice.create(db));
 
-  app.post('/api/users/new', users.create(db));
+  app.post('/api/users/register', users.create(db));
   app.post('/api/users/login', users.login(db));
 };

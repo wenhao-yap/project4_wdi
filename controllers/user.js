@@ -11,7 +11,7 @@ const create = (db) => {
 				response.status(401).json({failed:'This user has already been registered.'});
 			}
 			else if(queryResult.duplicate == false){
-				response.status(500).json({success:'New user has been created'});
+				response.status(500).json({success:'Registered! You can now log in to your account.'});
 			}
 		})
 	}  
@@ -21,10 +21,10 @@ const login = (db) => {
   return (request, response) => {
     db.user.login(request.body, (error, queryResult) => {
     	if(queryResult.invalidCredentials){
-        response.status(401).json({failed:'Unauthorized Access'});
+        response.status(401).json({failed:'Credentials are invalid.'});
       }
       else if(queryResult.userNotFound){
-        response.status(401).json({failed:'User is not found'});
+        response.status(401).json({failed:'User not found'});
       } 
       else {
     		response.status(200).json({

@@ -2,12 +2,14 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Form , Container } from 'semantic-ui-react'
 
-class User extends React.Component {
+class Register extends React.Component {
 	constructor(){
 		super();
 		this.state = {
 			username:'',
-			password:''
+			email: '',
+			password:'',
+			message:''
 		}
 	}
 
@@ -21,10 +23,11 @@ class User extends React.Component {
 		e.preventDefault();
 		let dataPackage = {
 			username:this.state.username,
+			email:this.state.email,
 			password:this.state.password
 		};
 		console.log(dataPackage);
-		this.postAPI('/api/users/login',dataPackage);
+		this.postAPI('/api/users/register',dataPackage);
 	}
 
 	postAPI(url,data){
@@ -33,28 +36,22 @@ class User extends React.Component {
 	    body: JSON.stringify(data),
 	    headers: new Headers({'Content-Type': 'application/json'})
 	  })
-	  .then(response => {
-	  if (response.status >= 400) {
-	    throw new Error("Bad response from server");
-	  }
-	  return response.json();       
-	  }).catch(error => console.error('Error:', error))
-	  .then((response) => { 
-	  	console.log('Success:', response.success);
-	  	console.log('Token:', response.token);
-	  	localStorage.setItem('wdi4', response.token)
-	  	//jwt-decode npm installed but not used yet
-
-	  // 	jwt.verify(response.token,"what-is-love",(err,authData)=>{
-			//   console.log(authData);
-			// })
+		.then(response => response.json())      
+	  .catch(error => console.error('Error:', error))
+	  .then((response) => {
+	  	if(response.failed){
+	  		this.setState({message:response.failed});
+	  	} else {
+	  		this.setState({message:response.success});
+	  	}
 	  });
 	}
 
   render() {
     return (
     	<Container> 
-	    	<h1>Login page</h1>
+	    	<h1>Register page</h1>
+	    	{this.state.message}
 			  <Form>
 			    <Form.Input 
 			    	label='Username'
@@ -62,6 +59,12 @@ class User extends React.Component {
 			    	name='username' 
 			    	placeholder='Enter username'
 			    	onChange={(e) => this.handleChange(e)}/>
+			    <Form.Input 
+			    	label='Email'
+			    	type='text'
+			    	name='email' 
+			    	placeholder='Enter email'
+			    	onChange={(e) => this.handleChange(e)}/>			    	
 			    <Form.Input 
 			    	label='Password'
 			    	type='password'
@@ -75,4 +78,4 @@ class User extends React.Component {
   }
 }
 
-export default withRouter(User);
+export default withRouter(Register);
