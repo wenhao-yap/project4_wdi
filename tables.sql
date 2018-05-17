@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
   name TEXT,
+  brand TEXT,
   description TEXT,
   price DECIMAL(18,2),
   quantity INT

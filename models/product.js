@@ -9,9 +9,10 @@ module.exports = (dbPool) => {
     },
 
     create: (newProduct,callback) => {
-  	  const queryString = 'INSERT INTO products (name,description,price,quantity) VALUES ($1,$2,$3,$4)';
+  	  const queryString = 'INSERT INTO products (name,brand,description,price,quantity) VALUES ($1,$2,$3,$4,$5)';
   	  const values = [
         newProduct.name,
+        newProduct.brand,
         newProduct.description,
         newProduct.price,
         newProduct.quantity
@@ -25,10 +26,11 @@ module.exports = (dbPool) => {
 
     edit: (updateProduct,callback) => {
       const queryString = 'UPDATE products\
-        Set name=$1,description=$2,price=$3,quantity=$4\
-        WHERE id=$5';
+        Set name=$1,brand=$2,description=$3,price=$4,quantity=$5\
+        WHERE id=$6';
       const values = [
         updateProduct.name,
+        updateProduct.brand,
         updateProduct.description,
         updateProduct.price,
         updateProduct.quantity,

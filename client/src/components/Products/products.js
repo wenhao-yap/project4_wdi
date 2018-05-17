@@ -1,6 +1,7 @@
 import React from 'react';
+import _ from 'lodash'
 import {getAPI,postAPI,deleteAPI,getIndexIfObjWithOwnAttr} from '../../Util';
-import { Container,Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Container,Button, Header, Icon, Modal, Search } from 'semantic-ui-react'
 import ProductsList from './productsList';
 import ProductsAdd from './productsAdd';
 import { withRouter } from 'react-router-dom';
@@ -14,13 +15,18 @@ class Products extends React.Component{
       newProduct: {
         id: '',
         name: '',
+        brand: '',
         description: '',
         price: '',
         quantity: ''
       },
       editMode : false,
       deleteStore : [],
-      modalOpen: false
+      modalOpen: false,
+      search: {
+        results: [],
+        isLoading: false
+      }
     }
   }
 
@@ -30,6 +36,7 @@ class Products extends React.Component{
     }) 
   }
 
+  //Modal functions to add new product
 	handleChange(event){
     let newProduct = this.state.newProduct;
     newProduct[event.target.name] = event.target.value;
@@ -59,6 +66,52 @@ class Products extends React.Component{
     this.setState({ modalOpen: false });
   }
 
+  handleResultSelect(e,data){
+    let newProduct = this.state.newProduct;
+    newProduct.brand = data.result.title;
+    this.setState({ newProduct: newProduct });
+  }
+
+  handleSearchChange(e){
+    let newProduct = this.state.newProduct;
+    let search = this.state.search;
+    newProduct.brand = e.target.value;
+    search.isLoading = true;
+    this.setState({
+      newProduct:newProduct,
+      search:search
+    });
+    let url = 'https://autocomplete.clearbit.com/v1/companies/suggest?query=' + e.target.value;
+    if(e.target.value.length > 0){
+      this.getBrands(url);
+    }
+  }
+
+  getBrands(url){
+    fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+      let data = json.map(item => {
+        return {
+          title:item.name,
+          description:item.domain,
+          image:item.logo
+        }
+      })
+      console.log(data);
+      const re = new RegExp(_.escapeRegExp(this.state.newProduct.brand), 'i');
+      const isMatch = result => re.test(result.title);
+      let search = this.state.search;
+      search.isLoading = false;
+      search.results = _.filter(data, isMatch)
+      this.setState({search:search});
+    });
+  }
+
+  //Table to view/edit/delete products
   handleMode(e){
     if(this.state.editMode){
       this.setState({editMode:false});
@@ -137,8 +190,15 @@ class Products extends React.Component{
           <Modal.Content>
             <ProductsAdd 
               handleChange = {(e) => this.handleChange(e)}  
-              newProduct = {this.state.newProduct} 
             />
+            <label className='brandField'>Brand</label>
+            <Search
+              loading={this.state.search.isLoading}
+              onResultSelect={(e,data) => this.handleResultSelect(e,data)}
+              onSearchChange={_.debounce((e) => this.handleSearchChange(e), 500, { leading: true })}
+              results={this.state.search.results}
+              value={this.state.newProduct.brand}
+            /> 
           </Modal.Content>
           <Modal.Actions>
             <Button color='red' onClick={(e) => this.handleClose(e)} inverted>

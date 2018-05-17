@@ -15,6 +15,7 @@ class Home extends React.Component {
     		<h1>Home page</h1>
     		{Object.keys(userInfo).length > 0 && userInfo.constructor === Object &&
     		<h3>Welcome back {userInfo.username}</h3>}
+
     	</Container> 
     );
   }

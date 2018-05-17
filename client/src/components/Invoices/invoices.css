@@ -19,3 +19,6 @@
 .InputFromTo-to .DayPickerInput-Overlay {
   margin-left: -198px;
 }
+.adjustHeight{
+	min-height:200px;
+}

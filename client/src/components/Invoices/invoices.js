@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Tab,Container } from 'semantic-ui-react'
+import { Tab,Container,Dimmer,Loader } from 'semantic-ui-react'
 import {getAPI} from '../../Util';
 import Invoice from './NewInvoice/invoice';
 import InvoicesList from './invoicesList';
@@ -55,11 +55,15 @@ class Invoices extends React.Component{
 
   render() {
     const panes = [
-      { menuItem: 'Manage Invoices', render: () => <Tab.Pane attached={false}>
-        {this.state.invoicesData ? (<InvoicesList invoicesData = {this.state.invoicesData}/>
-        ):(<h2>Loading...</h2>)}
+      { menuItem: 'Manage Invoices', 
+        render: () => <Tab.Pane attached={false}>
+          {this.state.invoicesData.length > 0 ? (<InvoicesList invoicesData = {this.state.invoicesData}/>
+          ):( <div className='adjustHeight'><Dimmer active inverted>
+                <Loader size='large' indeterminate>Preparing Files</Loader>
+              </Dimmer></div>)}
         </Tab.Pane> },
-      { menuItem: 'Add Invoice', render: () => <Tab.Pane attached={false}><Invoice/></Tab.Pane> },
+      { menuItem: 'Add Invoice', 
+        render: () => <Tab.Pane attached={false}><Invoice/></Tab.Pane> },
     ]
     return (
     	<Container>

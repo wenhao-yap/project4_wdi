@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Table, Container, Input, Pagination } from 'semantic-ui-react'
+import { Button, Checkbox, Table, Container, Input, Pagination, Icon } from 'semantic-ui-react'
 import './products.css';
 
 class ProductsList extends React.Component {
@@ -38,6 +38,15 @@ class ProductsList extends React.Component {
 		    				size='small' 
 		    				className='newInvoiceField'/>
 		    		</Table.Cell>
+		    		<Table.Cell>
+		    			<Input type="text"
+		    				name={"brand_" + i} 
+		    				value={item.brand || ''}
+		    				onChange={this.props.handleEditCell}
+		    				onKeyDown={this.props.keyPressEditCell}
+		    				size='small' 
+		    				className='newInvoiceField'/>
+		    		</Table.Cell>		    		
 	          <Table.Cell>
 	          	<Input type="text"
 	          		name={"description_" + i} 
@@ -74,6 +83,7 @@ class ProductsList extends React.Component {
         		<Table.Cell collapsing><Checkbox toggle name={item.id.toString()} onChange={this.props.selectDelete}/></Table.Cell>
           	<Table.Cell>{item.id}</Table.Cell>		    			
 		    		<Table.Cell>{item.name}</Table.Cell>
+		    		<Table.Cell>{item.brand}</Table.Cell>
 	          <Table.Cell>{item.description}</Table.Cell>
 	          <Table.Cell>${item.price}</Table.Cell>
 	          <Table.Cell>{item.quantity}</Table.Cell>
@@ -92,6 +102,7 @@ class ProductsList extends React.Component {
 			        <Table.HeaderCell />
 			        <Table.HeaderCell>#</Table.HeaderCell>
 			        <Table.HeaderCell>Product Name</Table.HeaderCell>
+			        <Table.HeaderCell>Brand</Table.HeaderCell>
 			        <Table.HeaderCell>Description</Table.HeaderCell>
 			        <Table.HeaderCell>Price</Table.HeaderCell>
 			        <Table.HeaderCell>Quantity</Table.HeaderCell>
@@ -106,7 +117,11 @@ class ProductsList extends React.Component {
 			        <Table.HeaderCell colSpan='5'>
 			          <Button size='small' onClick= {this.props.handleMode} >Edit Mode</Button>
 			          <Button size='small' onClick= {this.props.handleOpen}>Add product</Button>
-			          <Button size='small' onClick={this.props.handleDelete}>Delete</Button>
+			          {this.props.deleteStore.length > 0 ? (
+        					<Button size='small' className="black" onClick={this.props.handleDelete}><Icon name='trash' />Delete</Button>
+      					) : (
+        					<Button size='small' disabled>Delete</Button>
+      					)}
 			          <Pagination activePage={this.state.activePage} 
 			          	totalPages={totalPages} 
 			          	onPageChange={this.changePage}
