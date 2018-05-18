@@ -14,19 +14,30 @@ class PopularProducts extends React.Component {
   componentDidMount(){
     getAPI('/api/invoices', (res) => {
       let invoices = this.sorting(res);
-      let temp = [];
+      let products = [];
       invoices.forEach(item =>{
-        item.name.forEach( product =>{temp.push({name:product});});
+        item.name.forEach( (product,j) =>{
+          let newProduct = {
+            name:product,
+            quantity:item.quantity[j]
+          }
+          products.push(newProduct);
+        });
       })
-      temp = temp.reduce(function(sums,entry){
-         sums[entry.name] = (sums[entry.name] || 0) + 1;
-         return sums;
-      },{});
-      let sorted = [];
-      for(let key in temp){
-        sorted.push({name:key,count:temp[key]})
-      }
-      sorted.sort((a, b) => parseFloat(b.count) - parseFloat(a.count));
+      console.log(products);
+      let sorted = products.reduce((acc, curr) => {
+        if(acc.some(obj => obj.name === curr.name)) {
+          acc.forEach(obj => {
+            if(obj.name === curr.name) {
+              obj.quantity = parseInt(obj.quantity,10) + parseInt(curr.quantity,10);
+            }
+          });
+        } else {
+          acc.push(curr);
+        }
+        return acc;
+      }, []);
+      sorted.sort((a, b) => parseFloat(b.quantity) - parseFloat(a.quantity));
       console.log(sorted);
       if(sorted.length > 5){
         sorted = sorted.slice(0,5);
@@ -61,7 +72,7 @@ class PopularProducts extends React.Component {
       return (
         <Table.Row key={item.name}>
           <Table.Cell>{item.name}</Table.Cell>
-          <Table.Cell>{item.count}</Table.Cell>
+          <Table.Cell>{item.quantity}</Table.Cell>
         </Table.Row>
       );
     })
@@ -71,7 +82,7 @@ class PopularProducts extends React.Component {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Product</Table.HeaderCell>
-            <Table.HeaderCell>Invoices</Table.HeaderCell>
+            <Table.HeaderCell>Items sold</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>

@@ -121,6 +121,7 @@ class Products extends React.Component{
   } 
 
   handleEditCell(e){
+    console.log(e.target.name);
     //update data for client
     let productsData = this.state.productsData;
     let type = (e.target.name).match(/^[^_]+/)[0];
@@ -137,7 +138,8 @@ class Products extends React.Component{
       console.log(e.target.value);
       let productsData = this.state.productsData;
       let type = (e.target.name).match(/^[^_]+/)[0];
-      let index = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);     
+      let id = parseInt(((e.target.name).match(/[^_]+$/)[0]),10);
+      let index = getIndexIfObjWithOwnAttr(productsData,'id',id);     
       let updatedProduct = productsData[index];
       updatedProduct[type] = e.target.value;   
       console.log(updatedProduct);
