@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react'
 import {getAPI} from '../../Util';
+import './home.css';
 
 class LowStock extends React.Component {
   constructor(){
@@ -23,6 +24,7 @@ class LowStock extends React.Component {
       return (
         <Table.Row key={item.id}>
           <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>{item.brand}</Table.Cell>
           <Table.Cell>{item.quantity}</Table.Cell>
           <Table.Cell>{item.price}</Table.Cell>
         </Table.Row>
@@ -30,10 +32,11 @@ class LowStock extends React.Component {
     })
 
     return (
-      <Table basic='very' celled collapsing>
+      <Table basic='very' celled collapsing className="tableAlign">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Product</Table.HeaderCell>
+            <Table.HeaderCell>Brand</Table.HeaderCell>
             <Table.HeaderCell>Quantity</Table.HeaderCell>
             <Table.HeaderCell>Price</Table.HeaderCell>
           </Table.Row>

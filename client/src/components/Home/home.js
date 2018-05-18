@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Container,Grid,Segment } from 'semantic-ui-react'
 import decode from 'jwt-decode';
 import LowStock from './lowStock'
+import PopularProducts from './popularProducts'
 
 class Home extends React.Component {
 
@@ -18,18 +19,15 @@ class Home extends React.Component {
     		<h3>Welcome back {userInfo.username}</h3>}
         <Grid columns={3} divided>
           <Grid.Row stretched>
-            <Grid.Column>
-              <Segment><h3>Suggested Items To Restock</h3>
-                <LowStock />
+            <Grid.Column width={6}>
+              <Segment>
+                <h3>Suggested Items To Restock</h3><LowStock />
               </Segment>
             </Grid.Column>
-            <Grid.Column>
-              <Segment>Top items</Segment>
-            </Grid.Column>
-            <Grid.Column>
-              <Segment>Weekly's Report</Segment>
-              <Segment>Today's Report</Segment>
-              <Segment>Latest invoices</Segment>
+            <Grid.Column width={3}>
+              <Segment>
+                <h3>Popular Products</h3><PopularProducts/>
+              </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>        
