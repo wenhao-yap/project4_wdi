@@ -36,7 +36,7 @@ class ProductsList extends React.Component {
 		    				onChange={this.props.handleEditCell}
 		    				onKeyDown={this.props.keyPressEditCell}
 		    				size='small' 
-		    				className='newInvoiceField'/>
+		    				className='productField'/>
 		    		</Table.Cell>
 		    		<Table.Cell>
 		    			<Input type="text"
@@ -45,7 +45,7 @@ class ProductsList extends React.Component {
 		    				onChange={this.props.handleEditCell}
 		    				onKeyDown={this.props.keyPressEditCell}
 		    				size='small' 
-		    				className='newInvoiceField'/>
+		    				className='productField'/>
 		    		</Table.Cell>		    		
 	          <Table.Cell>
 	          	<Input type="text"
@@ -54,7 +54,7 @@ class ProductsList extends React.Component {
 	          		onChange={this.props.handleEditCell}
 	          		onKeyDown={this.props.keyPressEditCell}
 	          		size='small' 
-	          		className='newInvoiceField'/>
+	          		className='productField'/>
 	          </Table.Cell>
 	          <Table.Cell>
 	          	<Input type="text"
@@ -64,7 +64,7 @@ class ProductsList extends React.Component {
 	          		onKeyDown={this.props.keyPressEditCell}
 	          		size='small'
 	          		label={{content:'$'}} labelPosition='left' 
-	          		className='newInvoiceField'/>
+	          		className='productField'/>
 	          </Table.Cell>
 	          <Table.Cell>
 	          	<Input type="text"
@@ -73,7 +73,7 @@ class ProductsList extends React.Component {
 	          		onChange={this.props.handleEditCell}
 	          		onKeyDown={this.props.keyPressEditCell}
 	          		size='small' 
-	          		className='newInvoiceField'/>
+	          		className='productField'/>
 	          </Table.Cell>
           </Table.Row>					
 				)      	

@@ -4,11 +4,3 @@ body {
   font-family: sans-serif;
   cursor:default;
 }
-
-.show.react-bs-table-sizePerPage-dropdown ul:last-child {
-  display: block;
-}
-
-.react-bootstrap-table-page-btns-ul{
-  float:right;
-}

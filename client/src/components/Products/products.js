@@ -174,7 +174,6 @@ class Products extends React.Component{
   render() {
     return (
     	<Container>
-    		<h1> Products </h1>
         {this.state.productsData.length > 0 &&
           <ProductsList
             productsData={this.state.productsData}

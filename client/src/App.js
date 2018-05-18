@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import Header from './components/Layout/header'
 import Routes from './components/Layout/routes'
+import Sidebar from './components/Layout/sidebar'
+import './components/Layout/layout.css';
 
 class App extends Component {
-
   render() {
     return (
-    	<div>
-        <Header />
-        <main>
+      <div>
+        <Sidebar className='sidebar'/>
+        <div className='content'>
           <Routes />
-        </main>
-        <p>Footer here</p>
-		  </div>
+        </div>
+      </div>
     );
   }
 }

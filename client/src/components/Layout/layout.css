@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Ropa+Sans');
+
+.content{
+	margin-left: 210px;
+  min-width: 550px;
+  margin-top:10px;
+}
+
+.sidebar{
+	position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: 200px;
+  overflow-y: scroll;	
+}
+
+.sidebar-color{
+	background: black !important;
+}
+
+.sidebar-font{
+	font-size:24px;
+	font-family: 'Ropa Sans', sans-serif;
+}
