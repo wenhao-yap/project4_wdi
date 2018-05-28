@@ -54,14 +54,13 @@ class InvoicesList extends React.Component{
     //for setting date range for results
     let dateRangeData = this.props.invoicesData;
     if(dateFrom && dateTo){
+      dateRangeData = [];
       this.props.invoicesData.forEach((item,i) => {
         let date = new Date(item.created_date).getTime();
         if (date > this.state.dateFrom.getTime() && date < this.state.dateTo.getTime()) {
+          dateRangeData.push(item);
         }
-        else{
-          dateRangeData = dateRangeData.slice(0,i).concat(dateRangeData.slice(i + 1));
-        }
-      })
+      })  
     }
 
     //for pagination
@@ -82,8 +81,7 @@ class InvoicesList extends React.Component{
             dayPickerProps={{
               selectedDays: [dateFrom, { dateFrom, dateTo }],
               disabledDays: { after: dateTo },
-              toMonth: dateTo,
-              modifiers,
+              toMonth: dateTo,modifiers,
               numberOfMonths: 2,
               onDayClick: () => this.dateTo.getInput().focus(),
             }}
@@ -99,8 +97,7 @@ class InvoicesList extends React.Component{
               parseDate={parseDate}
               dayPickerProps={{
                 selectedDays: [dateFrom, { dateFrom, dateTo }],
-                disabledDays: { before: dateFrom },
-                modifiers,
+                disabledDays: { before: dateFrom },modifiers,
                 month: dateFrom,
                 fromMonth: dateFrom,
                 numberOfMonths: 2,

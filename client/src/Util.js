@@ -31,30 +31,6 @@ export let postAPI = (url,data) => {
   .then(response => console.log('Success:', response));
 }
 
-export const tableOptions = {
-  paginationSize: 5,
-  pageStartIndex: 1,
-  alwaysShowAllBtns: true, // Always show next and previous button
-  // withFirstAndLast: false, // Hide the going to First and Last page button
-  // hideSizePerPage: true, // Hide the sizePerPage dropdown always
-  hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
-  firstPageText: 'First',
-  prePageText: 'Back',
-  nextPageText: 'Next',
-  lastPageText: 'Last',
-  nextPageTitle: 'First page',
-  prePageTitle: 'Pre page',
-  firstPageTitle: 'Next page',
-  lastPageTitle: 'Last page',
-  sizePerPageList: [{
-    text: '5', value: 5
-  }, {
-    text: '10', value: 10
-  }, {
-    text: '30', value: 30
-  }] // A numeric array is also available. the purpose of above example is custom the text
-};
-
 export let deleteAPI = (url,data) => {
   fetch(url,{
     method:'DELETE',

@@ -42,14 +42,15 @@ class Products extends React.Component{
     newProduct[event.target.name] = event.target.value;
   	this.setState({newProduct:newProduct});		
   }
-
+  //there is a bug with the id. have to change to async and await to get reuturning id
+  //the id keep having 3
   handleSubmit(event){
     let newProduct = this.state.newProduct;
     newProduct.price = parseFloat(newProduct.price).toFixed(2);
-    newProduct.quantity = parseInt(newProduct.quantity,10);    
-    postAPI('/api/products/new',newProduct);
+    newProduct.quantity = parseInt(newProduct.quantity,10);        
+    postAPI('/api/products/new',newProduct);    
     let data = this.state.productsData;
-    newProduct.id = data[data.length-1].id + 1;
+    newProduct.id = data.length-1 + 1;
     data.push(newProduct);
   	this.setState({
       newProduct: {},
@@ -174,6 +175,7 @@ class Products extends React.Component{
   }
 
   render() {
+    console.log(this.state.deleteStore);
     return (
     	<Container>
         {this.state.productsData.length > 0 &&
@@ -190,7 +192,7 @@ class Products extends React.Component{
         }
         <Modal open={this.state.modalOpen} onClose={(e) => this.handleClose(e)} size='small'>
           <Header icon='shop' content='New product' />
-          <Modal.Content>
+          <Modal.Content className="adjustModal">
             <ProductsAdd 
               handleChange = {(e) => this.handleChange(e)}  
             />

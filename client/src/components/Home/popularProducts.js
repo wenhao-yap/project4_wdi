@@ -14,6 +14,7 @@ class PopularProducts extends React.Component {
   componentDidMount(){
     getAPI('/api/invoices', (res) => {
       let invoices = this.sorting(res);
+      console.log(invoices);
       let products = [];
       invoices.forEach(item =>{
         item.name.forEach( (product,j) =>{

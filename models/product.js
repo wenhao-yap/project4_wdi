@@ -9,7 +9,7 @@ module.exports = (dbPool) => {
     },
 
     create: (newProduct,callback) => {
-  	  const queryString = 'INSERT INTO products (name,brand,description,price,quantity) VALUES ($1,$2,$3,$4,$5)';
+  	  const queryString = 'INSERT INTO products (name,brand,description,price,quantity) VALUES ($1,$2,$3,$4,$5) returning id';
   	  const values = [
         newProduct.name,
         newProduct.brand,
