@@ -1,26 +1,24 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react'
-import {getAPI} from '../../Util';
 import './home.css';
 
 class LowStock extends React.Component {
   constructor(){
     super();
     this.state = {
-      productsData : []
+      sortedData : []
     }
   }  
 
   componentDidMount() {
-    getAPI('/api/products', (res) => {
-      res.sort((a, b) => parseFloat(a.quantity) - parseFloat(b.quantity));
-      res = res.slice(0,5);
-      this.setState({productsData: res})
-    }) 
+    let data = this.props.productsData;
+    data.sort((a, b) => parseFloat(a.quantity) - parseFloat(b.quantity));
+    data = data.slice(0,5);
+    this.setState({sortedData: data})
   }
 
   render() {
-    let rows = this.state.productsData.map(item => {
+    let rows = this.state.sortedData.map(item => {
       return (
         <Table.Row key={item.id}>
           <Table.Cell>{item.name}</Table.Cell>

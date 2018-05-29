@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Form , Container } from 'semantic-ui-react'
+import { Button,Form,Grid,Segment,Message,Header } from 'semantic-ui-react'
 
 class Register extends React.Component {
 	constructor(){
@@ -9,7 +9,8 @@ class Register extends React.Component {
 			username:'',
 			email: '',
 			password:'',
-			message:''
+			message:'',
+			msgColor:'red'
 		}
 	}
 
@@ -21,13 +22,17 @@ class Register extends React.Component {
 
 	handleSubmit(e){
 		e.preventDefault();
-		let dataPackage = {
-			username:this.state.username,
-			email:this.state.email,
-			password:this.state.password
-		};
-		console.log(dataPackage);
-		this.postAPI('/api/users/register',dataPackage);
+		if(this.state.username==='' || this.state.password==='' || this.state.email===''){
+			this.setState({message:'Please fill in all the required details'});
+		} else {
+			let dataPackage = {
+				username:this.state.username,
+				email:this.state.email,
+				password:this.state.password
+			};
+			console.log(dataPackage);
+			this.postAPI('/api/users/register',dataPackage);
+		}
 	}
 
 	postAPI(url,data){
@@ -42,38 +47,57 @@ class Register extends React.Component {
 	  	if(response.failed){
 	  		this.setState({message:response.failed});
 	  	} else {
-	  		this.setState({message:response.success});
+	  		this.setState({message:response.success,msgColor:'brown'});
 	  	}
 	  });
 	}
 
   render() {
     return (
-    	<Container> 
-	    	<h1>Register page</h1>
-	    	{this.state.message}
+    	<Grid
+	      textAlign='center'
+	      style={{ height: '100%' }}
+	      verticalAlign='middle'>
+	      <Grid.Column width={5}>
+	    	{this.state.message.length>0 &&
+				  <Message
+				    color={this.state.msgColor}
+				    header='Notice'
+				    content={this.state.message}
+				  />
+			  }	
 			  <Form>
-			    <Form.Input 
-			    	label='Username'
-			    	type='text'
-			    	name='username' 
-			    	placeholder='Enter username'
-			    	onChange={(e) => this.handleChange(e)}/>
-			    <Form.Input 
-			    	label='Email'
-			    	type='text'
-			    	name='email' 
-			    	placeholder='Enter email'
-			    	onChange={(e) => this.handleChange(e)}/>			    	
-			    <Form.Input 
-			    	label='Password'
-			    	type='password'
-			    	name='password' 
-			    	placeholder='Enter password'
-			    	onChange={(e) => this.handleChange(e)}/>
-			    <Button type='submit' onClick={(e) => this.handleSubmit(e)}>Submit</Button>
+			  	<Segment>
+			  		<Header as='h2' textAlign='center'>Register page</Header>
+				    <Form.Input 
+				    	type='text'
+				    	name='username' 
+				    	icon='user'
+	            iconPosition='left' 			    	
+				    	placeholder='Enter username'
+				    	required
+				    	onChange={(e) => this.handleChange(e)}/>
+				    <Form.Input 
+				    	type='text'
+				    	name='email' 
+				    	icon='mail'
+	            iconPosition='left' 			    	
+				    	placeholder='Enter email'
+				    	required
+				    	onChange={(e) => this.handleChange(e)}/>			    	
+				    <Form.Input 
+				    	type='password'
+				    	name='password'
+				    	icon='lock'
+	            iconPosition='left' 			    	 
+				    	placeholder='Enter password'
+				    	required
+				    	onChange={(e) => this.handleChange(e)}/>
+				    <Button color='teal' type='submit' onClick={(e) => this.handleSubmit(e)}>Submit</Button>
+			    </Segment>
 			  </Form>
-		  </Container>    	
+		  	</Grid.Column>
+    	</Grid>  	    	
     );
   }
 }

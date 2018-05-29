@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Ropa+Sans');
 
-.content{
+.mainWrapper{
 	margin-left: 210px;
   min-width: 550px;
   margin-top:10px;
@@ -22,4 +22,8 @@
 .sidebar-font{
 	font-size:24px;
 	font-family: 'Ropa Sans', sans-serif;
+}
+
+.sideBarSubHead{
+  margin:-15px 0px 20px 20px !important;
 }

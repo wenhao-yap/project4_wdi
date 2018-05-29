@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Form , Container } from 'semantic-ui-react'
+import { Button,Form,Message,Grid,Segment,Header } from 'semantic-ui-react'
 
 class Login extends React.Component {
 	constructor(){
@@ -50,25 +50,40 @@ class Login extends React.Component {
 
   render() {
     return (
-    	<Container> 
-	    	<h1>Login page</h1>
-	    	{this.state.message}
-			  <Form>
-			    <Form.Input 
-			    	label='Username'
-			    	type='text'
-			    	name='username' 
-			    	placeholder='Enter username'
-			    	onChange={(e) => this.handleChange(e)}/>
-			    <Form.Input 
-			    	label='Password'
-			    	type='password'
-			    	name='password' 
-			    	placeholder='Enter password'
-			    	onChange={(e) => this.handleChange(e)}/>
-			    <Button type='submit' onClick={(e) => this.handleSubmit(e)}>Submit</Button>
-			  </Form>
-		  </Container>    	
+    	<Grid
+	      textAlign='center'
+	      style={{ height: '100%' }}
+	      verticalAlign='middle'>
+	      <Grid.Column width={5}>
+		    	{this.state.message.length>0 &&
+					  <Message
+					    color='red'
+					    header='Submission Error'
+					    content={this.state.message}
+					  />
+				  }	    	
+				  <Form>
+				  	<Segment>
+					  	<Header as='h2' textAlign='center'>Login page</Header>
+					    <Form.Input 
+					    	type='text'
+					    	name='username'
+					    	icon='user'
+	              iconPosition='left' 
+					    	placeholder='Enter username'
+					    	onChange={(e) => this.handleChange(e)}/>
+					    <Form.Input 
+					    	type='password'
+					    	name='password'
+	              icon='lock'
+	              iconPosition='left'				    	 
+					    	placeholder='Enter password'
+					    	onChange={(e) => this.handleChange(e)}/>
+					    <Button color='teal' type='submit' onClick={(e) => this.handleSubmit(e)}>Submit</Button>
+				    </Segment>
+				  </Form>
+			  </Grid.Column>
+    	</Grid>  	
     );
   }
 }

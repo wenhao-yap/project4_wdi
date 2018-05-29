@@ -2,6 +2,7 @@ import React from 'react';
 import { Link,withRouter } from "react-router-dom";
 import { Menu,Header } from 'semantic-ui-react';
 import decode from 'jwt-decode';
+import './layout.css';
 
 class Sidebar extends React.Component {
   constructor(){
@@ -30,7 +31,8 @@ class Sidebar extends React.Component {
     return (
      <Menu vertical fixed='left' inverted className='sidebar-color'>
         <Menu.Item>
-          <Header as='h1' inverted color='teal'>Simple Inventory</Header>
+          <Header as='h1' inverted color='teal'>SimpleTory</Header>
+          <Header as='h4' inverted color='purple' className='sideBarSubHead'>Inventory management</Header>
         </Menu.Item>
         <Menu.Item 
           as={Link} to='/'

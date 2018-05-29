@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Table, Container, Input, Pagination, Icon } from 'semantic-ui-react'
+import { Button, Checkbox, Table, Container, Input, Pagination, Icon, Message } from 'semantic-ui-react'
 import './products.css';
 
 class ProductsList extends React.Component {
@@ -24,10 +24,20 @@ class ProductsList extends React.Component {
     const totalPages = Math.ceil(this.props.productsData.length / this.state.itemsPerPage);
 
     let rows = this.props.productsData.slice(firstIndex,lastIndex).map((item,i) => {
+    	if(this.props.cannotDelete.includes(item.name)){
+
+    	}
+
       if(this.props.editMode){
 				return(
 					<Table.Row key={item.id}>
-        		<Table.Cell collapsing><Checkbox toggle name={item.id.toString()} onChange={this.props.selectDelete}/></Table.Cell>
+        		<Table.Cell collapsing>
+        			{this.props.cannotDelete.includes(item.name) ? (
+        					<Checkbox toggle label='Disabled' disabled />
+        				):(
+        					<Checkbox toggle name={item.id.toString()} onChange={this.props.selectDelete}/>
+        				)}
+        		</Table.Cell>
           	<Table.Cell>{item.id}</Table.Cell>	
 		    		<Table.Cell>
 		    			<Input type="text"
@@ -80,7 +90,13 @@ class ProductsList extends React.Component {
       } else {
       	return(
 					<Table.Row key={item.id}>
-        		<Table.Cell collapsing><Checkbox toggle name={item.id.toString()} onChange={this.props.selectDelete}/></Table.Cell>
+        		<Table.Cell collapsing>
+      				{this.props.cannotDelete.includes(item.name) ? (
+      					<Checkbox toggle label='Disabled' disabled />
+      				):(
+      					<Checkbox toggle name={item.id.toString()} onChange={this.props.selectDelete}/>
+      				)}
+        		</Table.Cell>
           	<Table.Cell>{item.id}</Table.Cell>		    			
 		    		<Table.Cell>{item.name}</Table.Cell>
 		    		<Table.Cell>{item.brand}</Table.Cell>
@@ -94,8 +110,16 @@ class ProductsList extends React.Component {
 
 	  return (
 	    <Container>
-	    	<h1>*Impt* After editing, press enter to submit data to server</h1>
-	    	<h3>Deletion is in alpha stage. Please refrain from deleting products already in invoices </h3> 
+	    	<h1>Products</h1>
+	    	<Message
+	    		error
+			    header='Editing/Deletion of Data'
+			    list={[
+			      'Products present in invoices cannot be deleted.',
+			      'After editing, press enter to confirm changes.',
+			      'Only single edit works'
+			    ]}	    	
+	    	/>
 	      <Table compact celled definition>
 			    <Table.Header>
 			      <Table.Row>

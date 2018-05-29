@@ -26,13 +26,23 @@ class Products extends React.Component{
       search: {
         results: [],
         isLoading: false
-      }
+      },
+      cannotDelete : []
     }
   }
 
   componentDidMount() {
     getAPI('/api/products', (res) => {
       this.setState({productsData: res})
+    }) 
+    getAPI('/api/invoices', (res) => {
+      let output = [];
+      res.forEach((item) => {
+        if (output.includes(item.name) === false){
+          output.push(item.name);
+        }
+      })
+      this.setState({cannotDelete: output})
     }) 
   }
 
@@ -188,6 +198,7 @@ class Products extends React.Component{
             handleEditCell = {(e) => this.handleEditCell(e)}
             selectDelete = {(e,data) => this.selectDelete(e,data)}
             deleteStore = {this.state.deleteStore}
+            cannotDelete = {this.state.cannotDelete}
             handleDelete = {(e) => this.handleDelete(e)}/>
         }
         <Modal open={this.state.modalOpen} onClose={(e) => this.handleClose(e)} size='small'>
