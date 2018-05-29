@@ -17,8 +17,7 @@ class Home extends React.Component {
       year:'',
       invoicesData:[],
       productsData:[],
-      monthlyReport:[],
-      welcomeMsg:true
+      monthlyReport:[]
     }
   }
 
@@ -75,10 +74,6 @@ class Home extends React.Component {
     return output;
   }  
 
-  handleDismiss(){
-    this.setState({ welcomeMsg: false })
-  }
-
   render() {
   	let username = '';
   	if (localStorage["wdi4"]) {
@@ -92,7 +87,6 @@ class Home extends React.Component {
     		{username.length > 0 &&
         <Message
           success
-          onDismiss={this.handleDismiss}
           header={username}
         />}
         <Grid columns={3} divided>
